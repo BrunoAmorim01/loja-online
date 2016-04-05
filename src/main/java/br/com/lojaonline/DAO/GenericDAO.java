@@ -18,7 +18,7 @@ public class GenericDAO<T> implements DAO<T> {
 	private final Class<T> classeDeEntidade;
 	private final Field campoId;
 
-	@PersistenceContext(name="lojaonline")
+	@PersistenceContext(unitName="lojaonline")
 	protected EntityManager manager;
 
 	static {
