@@ -6,17 +6,19 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Id;
-
+import javax.persistence.PersistenceContext;
+@Stateless
 public class GenericDAO<T> implements DAO<T> {
 
 	private static final Logger LOGGER;
 	private final Class<T> classeDeEntidade;
 	private final Field campoId;
 
-	@Inject
+	@PersistenceContext
 	protected EntityManager manager;
 
 	static {
