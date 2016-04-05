@@ -3,14 +3,12 @@ package br.com.lojaonline.Bean;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.enterprise.inject.Any;
-import javax.enterprise.inject.Default;
+import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import br.com.lojaonline.DAO.CategoriaDAO;
-import br.com.lojaonline.DAO.DAOgeneric;
 import br.com.lojaonline.model.Categoria;
 
 @SuppressWarnings("serial")
@@ -24,8 +22,11 @@ public class CategoriaBean implements Serializable {
 	@Inject
 	private CategoriaDAO categoriaDAO;
 
+	
+	@PostConstruct
 	public void init() {
-		categorias = categoriaDAO.list("nome");
+		System.out.println("oi");
+		categorias = categoriaDAO.list();
 	}
 
 	public Categoria getCategoria() {
