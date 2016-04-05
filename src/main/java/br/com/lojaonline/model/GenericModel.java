@@ -11,10 +11,10 @@ import javax.persistence.MappedSuperclass;
 @MappedSuperclass
 public class GenericModel implements Serializable {
 	
+	private static final long serialVersionUID = 1L;
 	
-	private static final long serialVersionUID = 2603902376010132772L;
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy =GenerationType.AUTO )
 	private Long codigo;
 
 	public Long getCodigo() {

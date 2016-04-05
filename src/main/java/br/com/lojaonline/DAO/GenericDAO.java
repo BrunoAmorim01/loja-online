@@ -11,7 +11,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.Id;
 import javax.persistence.PersistenceContext;
 
-@Stateless
 public class GenericDAO<T> implements DAO<T> {
 
 	private static final Logger LOGGER;
