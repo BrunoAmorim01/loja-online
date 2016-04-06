@@ -1,28 +1,69 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	template="/WEB-INF/templates/TemplatePadrao.xhtml">
 
 	<ui:define name="titulo">Categorias</ui:define>
 
 	<ui:define name="corpo">
 
-		<p:dataTable value="#{categoriaBean.categorias}" var="cat"
-			reflow="true" paginatorAlwaysVisible="false" rows="10" emptyMessage="Nenhum registro encontrado">
-			
-			<p:column headerText="Codigo">
-			<h:outputLabel value="#{cat.codigo}" />
-			</p:column>
-			
-			<p:column headerText="Nome">
-			<h:outputLabel value="#{cat.nome}" />
-			</p:column>
+		<h:form id="frmPesquisa">
+			<p:panel header="Pesquisa de Categorias">
+				<p:dataTable value="#{categoriaBean.categorias}" var="cat"
+					reflow="true" paginatorAlwaysVisible="false" rows="10"
+					emptyMessage="Nenhum registro encontrado">
 
-		</p:dataTable>
+					<f:facet name="header">
+						<p:commandButton value="Nova Categoria" icon="fa fa-plus"
+							actionListener="#{categoriaBean.novo()}"
+							oncomplete="PF('dialog').show();"
+							update=":frmCadastro:painelcadastro" />
+					</f:facet>
+
+					<p:column headerText="Codigo">
+						<h:outputLabel value="#{cat.codigo}" />
+					</p:column>
+
+					<p:column headerText="Nome">
+						<h:outputLabel value="#{cat.nome}" />
+					</p:column>
+
+				</p:dataTable>
+			</p:panel>
+		</h:form>
+
+		<p:dialog header="Categoria" widgetVar="dialog" modal="true"
+			resizable="false" closable="false" responsive="true">
+
+			<h:form id="frmCadastro">
+				<div class="ui-fluid">
+					<p:panelGrid id="painelcadastro" layout="grid" columns="2"
+						columnClasses="ui-grid-col-3,ui-grid-col-9"
+						styleClass="ui-panelgrid-blank">
+						<p:outputLabel value="Nome" />
+						<p:inputText value="#{categoriaBean.categoria.nome}" />
+					</p:panelGrid>
+				
+				
+				<p:panelGrid layout="grid" columns="2"
+					columnClasses="ui-grid-col-6,ui-grid-col-6"
+					styleClass="ui-panelgrid-blank">
+					<p:commandButton icon="ui-icon-check" value="Salvar"
+						action="#{categoriaBean.salvar}" update="painelcadastro frmPesquisa"
+						process="@this,painelcadastro" />
+
+					<p:commandButton icon="ui-icon-close" value="Fechar"
+						oncomplete="PF('dialog').hide();"
+						process="@this" />
+				</p:panelGrid>
+				</div>
+			</h:form>
+		</p:dialog>
+
 	</ui:define>
 
 </ui:composition>

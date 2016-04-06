@@ -6,17 +6,22 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Id;
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceContextType;
+import javax.transaction.Transactional;
 
+@Stateless
 public class GenericDAO<T> implements DAO<T> {
 
 	private static final Logger LOGGER;
 	private final Class<T> classeDeEntidade;
 	private final Field campoId;
 
-	@Inject
+	@PersistenceContext(unitName="lojaonline",type=PersistenceContextType.TRANSACTION)
 	protected EntityManager manager;
 
 	static {
@@ -28,7 +33,7 @@ public class GenericDAO<T> implements DAO<T> {
 		this.campoId = this.buscarCampoId();
 	}
 
-	@Override
+	@Override	
 	public T merge(T t) {
 		return manager.merge(t);
 	}

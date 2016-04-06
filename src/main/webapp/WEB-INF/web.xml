@@ -31,6 +31,15 @@
 		<param-value>bootstrap</param-value>
 	</context-param>
 
+	<context-param>
+		<param-name>primefaces.FONT_AWESOME</param-name>
+		<param-value>true</param-value>
+	</context-param>
+
+	<mime-mapping>
+		<extension>xhtml</extension>
+		<mime-type>application/xml</mime-type>
+	</mime-mapping>
 
 </web-app>
 

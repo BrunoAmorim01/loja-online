@@ -1,23 +1,24 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:p="http://primefaces.org/ui">
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
 
 <h:head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title><ui:insert name="titulo">Loja Online</ui:insert></title>
-	<h:outputScript library="js" name="jquery-2.2.2.min.js" />
+	 <h:outputStylesheet library="css" name="sistema.css" />	 
 	<h:outputScript library="js" name="bootstrap/bootstrap.js" />
 	<h:outputStylesheet library="css" name="bootstrap/bootstrap.css" />
 
 </h:head>
 
 <h:body>
+ 
 	<p:ajaxStatus>
-		<f:facet name="start">
+		<f:facet name="start" styleClass="ajax-status">
 			<h:graphicImage library="images" name="loading.gif" />
 		</f:facet>
 
@@ -26,11 +27,12 @@
 		</f:facet>
 	</p:ajaxStatus>
 
-	<header> <nav class="navbar navbar-default" role="navigation">
+	<header> 
+	<nav class="navbar navbar-default" role="navigation">
 	<div class="navbar-header">
-		<button type="button" class="navbar-toggle" data-toggle="collapse"
-			data-target="#bar1">
-			<span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span>
+		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bar1">
+			<span class="sr-only">Toggle navigation</span> 
+			<span class="icon-bar"></span>
 			<span class="icon-bar"></span> <span class="icon-bar"></span>
 		</button>
 		<a class="navbar-brand" href="#">Vendas</a>
@@ -43,7 +45,7 @@
 				aria-expanded="false">Produtos<span class="caret"></span></a>
 
 				<ul class="dropdown-menu">
-					<li><p:button outcome="/produtos/categorias"/></li>
+					<li><h:link value="Categoria" outcome="/produtos/categorias"/> </li>
 					<li><a href="#">Another action</a></li>
 					<li><a href="#">Something else here</a></li>
 					<li role="separator" class="divider"></li>
@@ -57,7 +59,8 @@
 		</ul>
 	</div>
 
-	</nav> </header>
+	</nav> 
+	</header>
 
 
 	<div id="conteudo">
