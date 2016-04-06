@@ -14,3 +14,7 @@ body {
 	width: 35px;
 	height: 10px;
 }
+
+.ui-widget, .ui-widget .ui-widget {
+	font-size: 95% !important;
+}
