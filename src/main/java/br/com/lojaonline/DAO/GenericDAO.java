@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Id;
-import javax.persistence.PersistenceContext;
 
 public class GenericDAO<T> implements DAO<T> {
 
@@ -16,7 +16,7 @@ public class GenericDAO<T> implements DAO<T> {
 	private final Class<T> classeDeEntidade;
 	private final Field campoId;
 
-	@PersistenceContext(unitName="lojaonline")
+	@Inject
 	protected EntityManager manager;
 
 	static {
