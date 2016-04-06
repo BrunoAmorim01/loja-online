@@ -19,6 +19,7 @@
 
 					<f:facet name="header">
 						<p:commandButton value="Nova Categoria" icon="fa fa-plus"
+							title="Adiciona uma nova categoria ao sistema"
 							actionListener="#{categoriaBean.novo()}"
 							oncomplete="PF('dialog').show();"
 							update=":frmCadastro:painelcadastro" />
@@ -30,6 +31,14 @@
 
 					<p:column headerText="Nome">
 						<h:outputLabel value="#{cat.nome}" />
+					</p:column>
+
+					<p:column headerText="Opções">
+						<p:commandButton value="Editar" title="Editar" icon="fa fa-edit"
+							process="@this" oncomplete="PF('dialog').show()" update=":frmCadastro:painelcadastro">
+							<f:setPropertyActionListener value="#{cat}"
+								target="#{categoriaBean.categoria}" />
+						</p:commandButton>
 					</p:column>
 
 				</p:dataTable>
@@ -47,19 +56,19 @@
 						<p:outputLabel value="Nome" />
 						<p:inputText value="#{categoriaBean.categoria.nome}" />
 					</p:panelGrid>
-				
-				
-				<p:panelGrid layout="grid" columns="2"
-					columnClasses="ui-grid-col-6,ui-grid-col-6"
-					styleClass="ui-panelgrid-blank">
-					<p:commandButton icon="ui-icon-check" value="Salvar"
-						action="#{categoriaBean.salvar}" update="painelcadastro frmPesquisa"
-						process="@this,painelcadastro" />
 
-					<p:commandButton icon="ui-icon-close" value="Fechar"
-						oncomplete="PF('dialog').hide();"
-						process="@this" />
-				</p:panelGrid>
+
+					<p:panelGrid layout="grid" columns="2"
+						columnClasses="ui-grid-col-6,ui-grid-col-6"
+						styleClass="ui-panelgrid-blank">
+						<p:commandButton icon="ui-icon-check" value="Salvar"
+							action="#{categoriaBean.salvar}"
+							update="painelcadastro frmPesquisa grlGlobal"
+							process="@this,painelcadastro" />
+
+						<p:commandButton icon="ui-icon-close" value="Fechar"
+							oncomplete="PF('dialog').hide();" process="@this" />
+					</p:panelGrid>
 				</div>
 			</h:form>
 		</p:dialog>

@@ -11,6 +11,8 @@ import javax.inject.Named;
 import javax.transaction.TransactionScoped;
 import javax.transaction.Transactional;
 
+import org.omnifaces.util.Messages;
+
 import br.com.lojaonline.DAO.CategoriaDAO;
 import br.com.lojaonline.model.Categoria;
 
@@ -30,7 +32,7 @@ public class CategoriaBean implements Serializable {
 	@PostConstruct
 	public void init() {	
 		categoria=new Categoria();
-		categorias = categoriaDAO.list();
+		categorias = categoriaDAO.list("nome");
 	}	
 	
 	public void novo(){
@@ -41,8 +43,16 @@ public class CategoriaBean implements Serializable {
 	@Transactional
 	public void salvar(){
 		categoriaDAO.merge(categoria);	
-		categorias = categoriaDAO.list();
+		categoria=new Categoria();
+		categorias = categoriaDAO.list("nome");
+		Messages.addGlobalInfo("Categoria salva com sucesso");
 	}	
+	
+	public void excluir(){
+		categoriaDAO.remove(categoria);
+		categorias = categoriaDAO.list("nome");
+		Messages.addGlobalInfo("Categoria excluída com sucesso");
+	}
 	
 
 	public Categoria getCategoria() {
