@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -24,36 +25,35 @@ public class CategoriaBean implements Serializable {
 
 	private Categoria categoria;
 	private List<Categoria> categorias;
-	
-	@Inject	
+
+	@Inject
 	private CategoriaDAO categoriaDAO;
 
-	
 	@PostConstruct
-	public void init() {	
-		categoria=new Categoria();
+	public void init() {
+		categoria = new Categoria();
 		categorias = categoriaDAO.list("nome");
-	}	
-	
-	public void novo(){
-		categoria=new Categoria();
 	}
-	
-	
+
+	public void novo() {
+		categoria = new Categoria();
+	}
+
 	@Transactional
-	public void salvar(){
-		categoriaDAO.merge(categoria);	
-		categoria=new Categoria();
+	public void salvar() {
+		categoriaDAO.merge(categoria);
+		categoria = new Categoria();
 		categorias = categoriaDAO.list("nome");
 		Messages.addGlobalInfo("Categoria salva com sucesso");
-	}	
-	
-	public void excluir(){
+	}
+
+	@Transactional
+	public void excluir(ActionEvent event) {
+		categoria =(Categoria) event.getComponent().getAttributes().get("catSelecionada");
 		categoriaDAO.remove(categoria);
 		categorias = categoriaDAO.list("nome");
 		Messages.addGlobalInfo("Categoria excluída com sucesso");
 	}
-	
 
 	public Categoria getCategoria() {
 		return categoria;

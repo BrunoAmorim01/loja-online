@@ -13,8 +13,8 @@
 
 		<h:form id="frmPesquisa">
 			<p:panel header="Pesquisa de Categorias">
-				<p:dataTable value="#{categoriaBean.categorias}" var="cat"
-					reflow="true" paginatorAlwaysVisible="false" rows="10"
+				<p:dataTable id="dataTable" value="#{categoriaBean.categorias}"
+					var="cat" reflow="true" paginatorAlwaysVisible="false" rows="10"
 					emptyMessage="Nenhum registro encontrado">
 
 					<f:facet name="header">
@@ -34,15 +34,36 @@
 					</p:column>
 
 					<p:column headerText="Opções">
-						<p:commandButton value="Editar" title="Editar" icon="fa fa-edit"
-							process="@this" oncomplete="PF('dialog').show()" update=":frmCadastro:painelcadastro">
+						<p:commandButton value="Editar" title="Editar a categoria"
+							icon="fa fa-edit" process="@this"
+							oncomplete="PF('dialog').show()"
+							update=":frmCadastro:painelcadastro">
 							<f:setPropertyActionListener value="#{cat}"
 								target="#{categoriaBean.categoria}" />
+						</p:commandButton>
+
+						<p:commandButton value="Excluir" title="Excluir a categoria"
+							icon="fa fa-trash" update=":msgGlobal :frmPesquisa:dataTable"
+							actionListener="#{categoriaBean.excluir}">
+
+							<p:confirm icon="fa fa-exclamation-circle"
+								header="Confirmação de exclusão"
+								message="Dejesa realmente excluir a categoria #{categoriaBean.categoria.nome} ?" />
+							
+							<f:attribute name="catSelecionada" value="#{cat}"/>
+
 						</p:commandButton>
 					</p:column>
 
 				</p:dataTable>
 			</p:panel>
+
+			<p:confirmDialog global="true" closable="false">
+				<p:commandButton value="Sim" styleClass="ui-confirmdialog-yes"
+					icon="fa fa-check" />
+				<p:commandButton value="Não" styleClass="ui-confirmdialog-no"
+					icon="fa fa-close" />
+			</p:confirmDialog>
 		</h:form>
 
 		<p:dialog header="Categoria" widgetVar="dialog" modal="true"
