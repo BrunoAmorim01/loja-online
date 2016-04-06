@@ -16,6 +16,7 @@ public class EntityManagerProducer {
 
 	public EntityManagerProducer() {
 		factory = Persistence.createEntityManagerFactory("lojaonline");
+		
 	}
 
 	@Produces
