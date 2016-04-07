@@ -85,11 +85,7 @@
 								itemLabel="#{prod.nome}" itemValue="#{prod}"/>
 						</p:selectOneMenu>
 						
-						<p:outputLabel value="Valor Unitário" />
-						<pe:inputNumber value="#{produtoBean.produto.valorUnitario}"
-							decimalSeparator="," decimalPlaces="2" maxValue="9999.99"
-							minValue="0.00" symbol="R$ ">
-						</pe:inputNumber>
+						
 
 						<p:outputLabel value="Produto ativo ?" />
 						<p:selectBooleanCheckbox value="#{produtoBean.produto.ativo}" />
@@ -97,9 +93,6 @@
 						<p:outputLabel value="Estoque" />
 						<p:inputText value="#{produtoBean.produto.quantidadeEstoque}"
 							disabled="true" />
-
-						
-
 					</p:panelGrid>
 
 					<p:panelGrid layout="grid" columns="2"
