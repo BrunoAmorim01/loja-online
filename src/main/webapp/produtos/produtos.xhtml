@@ -44,11 +44,7 @@
 						<p:outputLabel value="#{produto.categoria.nome}" />
 					</p:column>
 					
-					<p:outputLabel value="Valor Unitário" />
-						<pe:inputNumber value="#{produtoBean.produto.valorUnitario}"
-							decimalSeparator="," decimalPlaces="2" maxValue="9999.99"
-							minValue="0.00" symbol="R$ ">
-						</pe:inputNumber>
+					
 
 					<p:column headerText="Estoque">
 						<p:outputLabel value="#{produto.quantidadeEstoque}" />
@@ -83,6 +79,12 @@
 							<f:selectItems value="#{produtoBean.categorias}" var="prod"
 								itemLabel="#{prod.nome}" itemValue="#{prod}"/>
 						</p:selectOneMenu>
+						
+						<p:outputLabel value="Valor Unitário" />
+						<pe:inputNumber value="#{produtoBean.produto.valorUnitario}"
+							decimalSeparator="," decimalPlaces="2" maxValue="9999.99"
+							minValue="0.00" symbol="R$ ">
+						</pe:inputNumber>
 
 						<p:outputLabel value="Produto ativo ?" />
 						<p:selectBooleanCheckbox value="#{produtoBean.produto.ativo}" />

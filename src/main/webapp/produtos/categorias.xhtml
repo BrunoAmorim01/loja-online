@@ -12,9 +12,9 @@
 	<ui:define name="corpo">
 
 		<h:form id="frmPesquisa">
-		
+
 			<p:panel header="Pesquisa de Categorias">
-			
+
 				<p:dataTable id="dataTable" value="#{categoriaBean.categorias}"
 					var="cat" reflow="true" paginatorAlwaysVisible="false" rows="10"
 					emptyMessage="Nenhum registro encontrado">
@@ -69,37 +69,40 @@
 			</p:confirmDialog>
 		</h:form>
 
-		<p:dialog header="Categoria" widgetVar="dialog" modal="true"
-			resizable="false" closable="false" responsive="true"
-			draggable="false">
+		
+			<p:dialog header="Categoria" widgetVar="dialog" modal="true"
+				resizable="false" closable="false" responsive="true"
+				draggable="false">
 
-			<h:form id="frmCadastro">
+				<h:form id="frmCadastro">
 
-				<div class="ui-fluid">
-					<p:panelGrid id="painelcadastro" layout="grid" columns="2"
-						columnClasses="ui-grid-col-3,ui-grid-col-8"
-						styleClass="ui-panelgrid-blank">
+					<div class="ui-fluid">
+					
+						<p:panelGrid id="painelcadastro" layout="grid" columns="2"
+							columnClasses="ui-grid-col-3,ui-grid-col-8"
+							styleClass="ui-panelgrid-blank">
+
+							<p:outputLabel value="Nome" />
+							<p:inputText value="#{categoriaBean.categoria.nome}" />
+						</p:panelGrid>
+
+						<p:panelGrid layout="grid" columns="2"
+							columnClasses="ui-grid-col-6,ui-grid-col-6"
+							styleClass="ui-panelgrid-blank">
+							<p:commandButton icon="ui-icon-check" value="Salvar"
+								action="#{categoriaBean.salvar}"
+								update="painelcadastro frmPesquisa grlGlobal"
+								process="@this,painelcadastro" />
+
+							<p:commandButton icon="ui-icon-close" value="Fechar"
+								oncomplete="PF('dialog').hide();" process="@this" />
+						</p:panelGrid>
 						
-						<p:outputLabel value="Nome" />
-						<p:inputText value="#{categoriaBean.categoria.nome}" />
-					</p:panelGrid>
+					</div>
+				</h:form>
 
-					<p:panelGrid layout="grid" columns="2"
-						columnClasses="ui-grid-col-6,ui-grid-col-6"
-						styleClass="ui-panelgrid-blank">
-						<p:commandButton icon="ui-icon-check" value="Salvar"
-							action="#{categoriaBean.salvar}"
-							update="painelcadastro frmPesquisa grlGlobal"
-							process="@this,painelcadastro" />
-
-						<p:commandButton icon="ui-icon-close" value="Fechar"
-							oncomplete="PF('dialog').hide();" process="@this" />
-					</p:panelGrid>
-				</div>
-			</h:form>
-			
-		</p:dialog>
-
+			</p:dialog>
+		
 	</ui:define>
 
 </ui:composition>
