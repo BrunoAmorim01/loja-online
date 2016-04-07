@@ -3,9 +3,9 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:pe="http://primefaces.org/ui/extensions"
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	
 	template="/WEB-INF/templates/TemplatePadrao.xhtml">
 
 	<ui:define name="titulo">Produtos</ui:define>
@@ -85,12 +85,7 @@
 						<p:inputText value="#{produtoBean.produto.quantidadeEstoque}"
 							disabled="true" />
 
-						<p:outputLabel value="Valor Unitário" />
-						<pe:inputNumber value="#{produtoBean.produto.valorUnitario}"
-							decimalSeparator="," decimalPlaces="2" maxValue="9999.99"
-							minValue="0.0" symbol="R$ ">
-
-						</pe:inputNumber>
+						
 
 					</p:panelGrid>
 
