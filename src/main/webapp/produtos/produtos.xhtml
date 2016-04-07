@@ -46,7 +46,7 @@
 
 					<p:column headerText="Valor unitário" width="100">
 						<p:outputLabel value="#{produto.valorUnitario}">
-							<f:convertNumber type="currency" />
+							<f:convertNumber type="currency" locale="pt_BR" />
 						</p:outputLabel>
 					</p:column>
 
@@ -86,10 +86,9 @@
 						</p:selectOneMenu>
 
 						<p:outputLabel value="Valor Unitário" />
-						<pe:inputNumber value="#{produtoBean.produto.valorUnitario}"
-							decimalSeparator="," decimalPlaces="2" maxValue="9999.99"
-							minValue="0.00" symbol="R$ ">
-						</pe:inputNumber>
+						<p:inputText value="#{produtoBean.produto.valorUnitario}">
+							<f:convertNumber locale="pt_BR" minFractionDigits="2" />
+						</p:inputText>						
 
 						<p:outputLabel value="Produto ativo ?" />
 						<p:selectBooleanCheckbox value="#{produtoBean.produto.ativo}" />
