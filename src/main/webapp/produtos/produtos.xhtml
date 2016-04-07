@@ -60,12 +60,12 @@
 		</h:form>
 
 
-		<p:dialog header="Produto" widgetVar="dialog"
-			resizable="false" closable="false" responsive="true" modal="true"
-			draggable="false">
-			
+		<p:dialog header="Produto" widgetVar="dialog" resizable="false"
+			closable="false" responsive="true" modal="true" draggable="false">
+
+			<h:form id="frmCadastro">
 				<div class="ui-fluid">
-				<h:form id="frmCadastro">
+
 					<p:panelGrid id="painelcadastro" layout="grid" columns="2"
 						columnClasses="ui-grid-col-3,ui-grid-col-8"
 						styleClass="ui-panelgrid-blank">
@@ -110,8 +110,9 @@
 						<p:commandButton icon="ui-icon-close" value="Fechar"
 							oncomplete="PF('dialog').hide();" process="@this" />
 					</p:panelGrid>
-					</h:form>
-				</div>			
+
+				</div>
+			</h:form>
 		</p:dialog>
 
 	</ui:define>
