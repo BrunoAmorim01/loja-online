@@ -9,10 +9,15 @@
 <h:head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<title><ui:insert name="titulo">Loja Online</ui:insert></title>	
+	<title><ui:insert name="titulo">Loja Online</ui:insert></title>
+	
 	<h:outputScript library="js" name="bootstrap/bootstrap.js" />
+	
+	
 	<h:outputStylesheet library="css" name="bootstrap/bootstrap.css" />
 	<h:outputStylesheet library="css" name="sistema.css" />
+	
+	<h:outputScript library="js" name="jquery.maskMoney.js" />
 
 </h:head>
 
@@ -20,7 +25,8 @@
 
 	<p:ajaxStatus styleClass="ajax-status">
 		<f:facet name="start">
-			<h:graphicImage library="images" name="loading.gif" width="40" height="40"/>
+			<h:graphicImage library="images" name="loading.gif" width="40"
+				height="40" />
 		</f:facet>
 
 		<f:facet name="complete">
@@ -47,7 +53,7 @@
 				<ul class="dropdown-menu">
 					<li><h:link value="Categoria" outcome="/produtos/categorias" />
 					</li>
-					<li><a href="#">Another action</a></li>
+					<li><h:link value="Produto" outcome="/produtos/produtos" /></li>
 					<li><a href="#">Something else here</a></li>
 					<li role="separator" class="divider"></li>
 					<li><a href="#">Separated link</a></li>
@@ -64,7 +70,7 @@
 
 
 	<div id="conteudo">
-		<p:messages id="msgGlobal" />
+		<p:messages id="msgGlobal" closable="true" />
 		<p:growl id="grlGlobal" />
 		<ui:insert name="corpo" />
 	</div>
@@ -73,6 +79,9 @@
 
 	<footer> Sistema online de vendas - <a
 		href="http://google.com.br" target="_blank">google.com.br</a> </footer>
+
+
+	
 
 </h:body>
 

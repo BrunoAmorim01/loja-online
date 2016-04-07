@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/WEB-INF/templates/TemplatePadrao.xhtml">
+
+	<ui:define name="titulo">Categorias</ui:define>
+
+	<ui:define name="corpo">
+		<h:form id="frmPesquisa">
+
+			<p:panel header="Pesquisa de produtos">
+
+				<p:dataTable id="datatable" value="#{produtoBean.produtos}"
+					var="produto" reflow="true" paginatorAlwaysVisible="false"
+					rows="10" emptyMessage="Nenhum registro encontrado">
+
+					<f:facet name="header">
+						<p:commandButton value="Novo produto" icon="fa fa-plus"
+							title="Adiciona uma novo produto ao sistema"
+							actionListener="#{produtoBean.novo()}"
+							oncomplete="PF('dialog').show();"
+							update=":frmCadastro:painelcadastro">
+
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+
+						</p:commandButton>
+					</f:facet>
+
+					<p:column headerText="Codigo">
+						<p:outputLabel value="#{produto.codigo}" />
+					</p:column>
+
+					<p:column headerText="SKU">
+						<p:outputLabel value="#{produto.sku}" />
+					</p:column>
+
+					<p:column headerText="Nome">
+						<p:outputLabel value="#{produto.nome}" />
+					</p:column>
+
+					<p:column headerText="Categoria">
+						<p:outputLabel value="#{produto.categoria.nome}" />
+					</p:column>
+
+					<p:column headerText="Estoque">
+						<p:outputLabel value="#{produto.quantidadeEstoque}" />
+					</p:column>
+
+				</p:dataTable>
+			</p:panel>
+		</h:form>
+
+		<p:dialog header="Produto" widgetVar="dialog" modal="true"
+			resizable="false" closable="false" responsive="true"
+			draggable="false">
+
+			<h:form id="frmCadastro">
+				<div class="ui-fluid">
+					<p:panelGrid id="painelcadastro" layout="grid" columns="2"
+						columnClasses="ui-grid-col-3,ui-grid-col-9"
+						styleClass="ui-panelgrid-blank">
+
+						<p:outputLabel value="Nome" />
+						<p:inputText value="#{produtoBean.produto.nome}" />
+
+						<p:outputLabel value="SKU" />
+						<p:inputText value="#{produtoBean.produto.sku}" />
+
+						<p:outputLabel value="Categoria" />
+						<p:selectOneMenu value="#{produtoBean.produto.categoria}"
+							converter="omnifaces.SelectItemsConverter">
+							<f:selectItem itemLabel="Selecione uma opção"
+								noSelectionOption="true" />
+							<f:selectItems value="#{produtoBean.categorias}" var="prod"
+								itemLabel="#{prod.nome}" itemValue="#{prod}"></f:selectItems>
+						</p:selectOneMenu>
+
+						<p:outputLabel value="Produto ativo ?" />
+						<p:selectBooleanCheckbox value="#{produtoBean.produto.ativo}" />
+
+						<p:outputLabel value="Estoque" />
+						<p:inputText value="#{produtoBean.produto.quantidadeEstoque}"
+							disabled="true" />
+
+						<p:outputLabel value="Valor Unitário" />
+						<pe:inputNumber value="#{produtoBean.produto.valorUnitario}"
+							decimalSeparator="," decimalPlaces="2" maxValue="9999.99" minValue="0.0" symbol="R$ ">
+							
+						</pe:inputNumber>
+
+
+
+
+
+					</p:panelGrid>
+
+					<p:panelGrid layout="grid" columns="2"
+						columnClasses="ui-grid-col-6,ui-grid-col-6"
+						styleClass="ui-panelgrid-blank">
+						<p:commandButton icon="ui-icon-check" value="Salvar"
+							action="#{produtoBean.salvar}"
+							update="painelcadastro frmPesquisa grlGlobal"
+							process="@this,painelcadastro" />
+
+						<p:commandButton icon="ui-icon-close" value="Fechar"
+							oncomplete="PF('dialog').hide();" process="@this" />
+					</p:panelGrid>
+				</div>
+			</h:form>
+		</p:dialog>
+
+	</ui:define>
+</ui:composition>

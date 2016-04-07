@@ -24,6 +24,7 @@ import br.com.lojaonline.model.Categoria;
 public class CategoriaBean implements Serializable {
 
 	private Categoria categoria;
+	
 	private List<Categoria> categorias;
 
 	@Inject
@@ -37,6 +38,7 @@ public class CategoriaBean implements Serializable {
 
 	public void novo() {
 		categoria = new Categoria();
+		
 	}
 
 	@Transactional
