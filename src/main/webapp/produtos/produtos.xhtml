@@ -25,10 +25,6 @@
 							actionListener="#{produtoBean.novo()}"
 							oncomplete="PF('dialog').show();"
 							update=":frmCadastro:painelcadastro">
-
-							<f:actionListener
-								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
-
 						</p:commandButton>
 					</f:facet>
 
@@ -61,6 +57,7 @@
 			draggable="false">
 
 			<h:form id="frmCadastro">
+			
 				<div class="ui-fluid">
 					<p:panelGrid id="painelcadastro" layout="grid" columns="2"
 						columnClasses="ui-grid-col-3,ui-grid-col-9"
