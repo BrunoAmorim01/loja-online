@@ -5,16 +5,15 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
-
 <h:head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<title><ui:insert name="titulo">Loja Online</ui:insert></title>
-		
-	<h:outputScript library="js" name="bootstrap/bootstrap.js" />		
+
+	<h:outputScript library="js" name="bootstrap/bootstrap.js" />
 	<h:outputStylesheet library="css" name="bootstrap/bootstrap.css" />
-	<h:outputStylesheet library="css" name="sistema.css" />	
-	
+	<h:outputStylesheet library="css" name="sistema.css" />
+
 
 </h:head>
 
@@ -38,8 +37,8 @@
 			<span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span>
 			<span class="icon-bar"></span> <span class="icon-bar"></span>
 		</button>
-		
-		<h:link styleClass="navbar-brand" value="Vendas" outcome="/home"/>
+
+		<h:link styleClass="navbar-brand" value="Vendas" outcome="/home" />
 	</div>
 
 	<div class="collapse navbar-collapse" id="bar1">
@@ -49,10 +48,11 @@
 				aria-expanded="false">Produtos<span class="caret"></span></a>
 
 				<ul class="dropdown-menu">
-					<li><h:link value="Categoria" outcome="/produtos/categorias" />
-					</li>
-					<li><h:link value="Produto" outcome="/produtos/produtos" /></li>
-					<li><a href="#">Something else here</a></li>
+					<li><h:link value="Fabricantes"	outcome="/produtos/fabricantes" /></li>
+					<li><h:link value="Categorias" outcome="/produtos/categorias" /></li>
+					<li><h:link value="Produtos" outcome="/produtos/produtos" /></li>
+
+
 					<li role="separator" class="divider"></li>
 					<li><a href="#">Separated link</a></li>
 					<li role="separator" class="divider"></li>
@@ -75,11 +75,12 @@
 
 	<p:separator style="margin-top:20px" />
 
-	<footer> Sistema online de vendas - <a
-		href="http://google.com.br" target="_blank">google.com.br</a> </footer>
+	<footer> Sistema online de vendas - Por Bruno da Silva Amorim
+	- <a href="http://lojaonline-projetospessoais.rhcloud.com/home.xhtml"
+		target="_blank">Site</a> </footer>
 
 
-	
+
 
 </h:body>
 

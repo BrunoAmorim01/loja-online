@@ -47,6 +47,11 @@ public class Produto extends GenericModel {
 	
 	@NotNull
 	@ManyToOne
+	@JoinColumn(name="fabricante_id",nullable=false,foreignKey=@ForeignKey(name="FK_Fabricante"))
+	private Fabricante fabricante;
+	
+	@NotNull
+	@ManyToOne
 	@JoinColumn(name="categoria_id",nullable=false,foreignKey=@ForeignKey(name="FK_Categoria"))
 	private Categoria categoria;
 
@@ -104,6 +109,14 @@ public class Produto extends GenericModel {
 
 	public void setDataCadastro(LocalDate dataCadastro) {
 		this.dataCadastro = dataCadastro;
+	}
+
+	public Fabricante getFabricante() {
+		return fabricante;
+	}
+
+	public void setFabricante(Fabricante fabricante) {
+		this.fabricante = fabricante;
 	}
 
 }

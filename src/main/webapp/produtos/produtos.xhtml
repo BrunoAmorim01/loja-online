@@ -40,6 +40,10 @@
 						filterBy="#{produto.nome}">
 						<p:outputLabel value="#{produto.nome}" />
 					</p:column>
+					
+					<p:column headerText="Fabricante" width="150">
+						<p:outputLabel value="#{produto.fabricante.nome}" />
+					</p:column>
 
 					<p:column headerText="Categoria" width="150">
 						<p:outputLabel value="#{produto.categoria.nome}" />
@@ -108,7 +112,6 @@
 						<p:outputLabel value="Data cadastro" />
 						<p:inputText value="#{produtoBean.produto.dataCadastro}"
 							disabled="true" converter="localDateTimeConverter">
-
 						</p:inputText>
 
 						<p:outputLabel value="Nome" />
@@ -116,6 +119,15 @@
 
 						<p:outputLabel value="SKU" />
 						<p:inputText value="#{produtoBean.produto.sku}" />
+						
+						<p:outputLabel value="Fabricante" />
+						<p:selectOneMenu value="#{produtoBean.produto.fabricante}"
+							converter="omnifaces.SelectItemsConverter">
+							<f:selectItem itemLabel="Selecione uma opção"
+								noSelectionOption="true" />
+							<f:selectItems value="#{produtoBean.fabricantes}" var="fab"
+								itemLabel="#{fab.nome}" itemValue="#{fab}" />
+						</p:selectOneMenu>
 
 						<p:outputLabel value="Categoria" />
 						<p:selectOneMenu value="#{produtoBean.produto.categoria}"

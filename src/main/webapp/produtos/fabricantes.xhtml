@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/WEB-INF/templates/TemplatePadrao.xhtml">
+
+	<ui:define name="titulo">Fabricantes</ui:define>
+
+	<ui:define name="corpo">
+
+		<h:form id="frmPesquisa">
+
+			<p:panel header="Pesquisa de Fabricantes">
+
+				<p:dataTable id="dataTable" value="#{fabricanteBean.fabricantes}"
+					var="fab" reflow="true" paginatorAlwaysVisible="false" rows="10"
+					emptyMessage="Nenhum registro encontrado">
+
+					<f:facet name="header">
+						<p:commandButton value="Novo Fabricante" icon="fa fa-plus"
+							title="Adiciona uma novo Fabricante ao sistema"
+							actionListener="#{fabricanteBean.novo()}"
+							oncomplete="PF('dialog').show();"
+							update=":frmCadastro:painelcadastro" />
+					</f:facet>
+
+					<p:column headerText="Codigo" width="100">
+						<h:outputLabel value="#{fab.codigo}" />
+					</p:column>
+
+					<p:column headerText="Nome">
+						<h:outputLabel value="#{fab.nome}" />
+					</p:column>
+
+					<p:column headerText="Opções" width="200">
+						<p:commandButton value="Editar" title="Editar o Fabricante"
+							icon="fa fa-edit" process="@this"
+							oncomplete="PF('dialog').show()"
+							update=":frmCadastro:painelcadastro">
+							<f:setPropertyActionListener value="#{fab}"
+								target="#{fabricanteBean.fabricante}" />
+						</p:commandButton>
+
+						<p:commandButton style="margin-left:10px;" value="Excluir"
+							title="Excluir o Fabricante" icon="fa fa-trash"
+							update=":msgGlobal :frmPesquisa:dataTable"
+							actionListener="#{fabricanteBean.excluir}">
+
+							<p:confirm icon="fa fa-exclamation-circle"
+								header="Confirmação de exclusão"
+								message="Dejesa realmente excluir o Fabricante #{fabricanteBean.fabricante.nome} ?" />
+
+							<f:attribute name="fabSelecionado" value="#{fab}" />
+
+						</p:commandButton>
+					</p:column>
+
+				</p:dataTable>
+			</p:panel>
+
+			<p:confirmDialog global="true" closable="false">
+				<p:commandButton value="Sim" styleClass="ui-confirmdialog-yes"
+					icon="fa fa-check" />
+				<p:commandButton value="Não" styleClass="ui-confirmdialog-no"
+					icon="fa fa-close" />
+			</p:confirmDialog>
+		</h:form>
+
+		
+			<p:dialog header="Fabricante" widgetVar="dialog" modal="true"
+				resizable="false" closable="false" responsive="true"
+				draggable="false">
+
+				<h:form id="frmCadastro">
+
+					<div class="ui-fluid">
+					
+						<p:panelGrid id="painelcadastro" layout="grid" columns="2"
+							columnClasses="ui-grid-col-3,ui-grid-col-8"
+							styleClass="ui-panelgrid-blank">
+
+							<p:outputLabel value="Nome" />
+							<p:inputText value="#{fabricanteBean.fabricante.nome}" />
+						</p:panelGrid>
+
+						<p:panelGrid layout="grid" columns="2"
+							columnClasses="ui-grid-col-6,ui-grid-col-6"
+							styleClass="ui-panelgrid-blank">
+							<p:commandButton icon="ui-icon-check" value="Salvar"
+								action="#{fabricanteBean.salvar}"
+								update="painelcadastro frmPesquisa grlGlobal"
+								process="@this,painelcadastro" />
+
+							<p:commandButton icon="ui-icon-close" value="Fechar"
+								oncomplete="PF('dialog').hide();" process="@this" />
+						</p:panelGrid>						
+						
+					</div>
+					
+				</h:form>
+
+			</p:dialog>
+		
+	</ui:define>
+
+</ui:composition>

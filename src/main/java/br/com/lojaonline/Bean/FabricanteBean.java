@@ -3,9 +3,14 @@ package br.com.lojaonline.Bean;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.transaction.Transactional;
+
+import org.omnifaces.util.Messages;
 
 import br.com.lojaonline.DAO.FabricanteDAO;
 import br.com.lojaonline.model.Fabricante;
@@ -17,13 +22,35 @@ public class FabricanteBean implements Serializable {
 
 	@Inject
 	private FabricanteDAO fabricanteDAO;
-	
+
 	private Fabricante fabricante;
-	
+
 	List<Fabricante> fabricantes;
-	
-	public void init(){
+
+	@PostConstruct
+	public void init() {
+		fabricantes = fabricanteDAO.list("nome");
+	}
+
+	public void novo() {
+		fabricante = new Fabricante();
+	}
+
+	@Transactional
+	public void salvar() {
+		fabricanteDAO.merge(fabricante);
+		Messages.addGlobalInfo("Fabricante " + fabricante.getNome() + " salvo com sucesso");
+		novo();
+		init();
 		
+	}
+
+	@Transactional
+	public void excluir(ActionEvent event) {
+		fabricante = (Fabricante) event.getComponent().getAttributes().get("fabSelecionado");
+		fabricanteDAO.remove(fabricante);
+		Messages.addGlobalInfo("Fabricante"+ "fabricante.getNome()"+"excluído com sucesso");
+		init();		
 	}
 
 	public Fabricante getFabricante() {
@@ -41,5 +68,5 @@ public class FabricanteBean implements Serializable {
 	public void setFabricantes(List<Fabricante> fabricantes) {
 		this.fabricantes = fabricantes;
 	}
-	
+
 }

@@ -12,9 +12,11 @@ import javax.inject.Named;
 import org.omnifaces.util.Messages;
 
 import br.com.lojaonline.DAO.CategoriaDAO;
+import br.com.lojaonline.DAO.FabricanteDAO;
 import br.com.lojaonline.DAO.ProdutoDAO;
 import br.com.lojaonline.Service.ProdutoService;
 import br.com.lojaonline.model.Categoria;
+import br.com.lojaonline.model.Fabricante;
 import br.com.lojaonline.model.Produto;
 
 @SuppressWarnings("serial")
@@ -27,14 +29,16 @@ public class ProdutoBean implements Serializable {
 
 	@Inject
 	private CategoriaDAO categoriaDAO;
-
 	@Inject
 	private ProdutoDAO produtoDAO;
+	@Inject
+	private FabricanteDAO fabricanteDAO;
 
 	private Produto produto;
 
 	private List<Produto> produtos;
 	private List<Categoria> categorias;
+	private List<Fabricante> fabricantes;
 
 	@PostConstruct
 	public void init() {
@@ -44,10 +48,12 @@ public class ProdutoBean implements Serializable {
 	public void novo() {
 		produto = new Produto();
 		produto.setQuantidadeEstoque(0);
+		fabricantes = fabricanteDAO.list("nome");
 		categorias = categoriaDAO.list("nome");
 	}
 
 	public void carregarCategorias() {
+		fabricantes = fabricanteDAO.list("nome");
 		categorias = categoriaDAO.list("nome");
 	}
 
@@ -87,5 +93,13 @@ public class ProdutoBean implements Serializable {
 
 	public void setCategorias(List<Categoria> categorias) {
 		this.categorias = categorias;
+	}
+
+	public List<Fabricante> getFabricantes() {
+		return fabricantes;
+	}
+
+	public void setFabricantes(List<Fabricante> fabricantes) {
+		this.fabricantes = fabricantes;
 	}
 }
