@@ -36,11 +36,12 @@
 						<p:outputLabel value="#{produto.sku}" />
 					</p:column>
 
-					<p:column headerText="Nome">
+					<p:column headerText="Nome" sortBy="#{produto.nome}"
+						filterBy="#{produto.nome}">
 						<p:outputLabel value="#{produto.nome}" />
 					</p:column>
 
-					<p:column headerText="Categoria">
+					<p:column headerText="Categoria" width="150">
 						<p:outputLabel value="#{produto.categoria.nome}" />
 					</p:column>
 
@@ -55,13 +56,26 @@
 						<p:outputLabel value="#{produto.quantidadeEstoque}" />
 					</p:column>
 
+					<p:column headerText="Opções" width="200">
+
+						<p:commandButton value="Editar" title="Editar o produto"
+							icon="fa fa-edit" process="@this"
+							oncomplete="PF('dialog').show()"
+							update=":frmCadastro:painelcadastro" action="#{produtoBean.carregarCategorias()}">
+							<f:setPropertyActionListener value="#{produto}"
+								target="#{produtoBean.produto}" />
+						</p:commandButton>
+
+					</p:column>
+
 				</p:dataTable>
 			</p:panel>
 		</h:form>
 
 
 		<p:dialog header="Produto" widgetVar="dialog" resizable="false"
-			closable="false" responsive="true" modal="true" draggable="false">
+			closable="false" responsive="true" modal="true" draggable="false"
+			height="350">
 
 			<h:form id="frmCadastro">
 				<div class="ui-fluid">
@@ -69,6 +83,12 @@
 					<p:panelGrid id="painelcadastro" layout="grid" columns="2"
 						columnClasses="ui-grid-col-3,ui-grid-col-8"
 						styleClass="ui-panelgrid-blank">
+
+						<p:outputLabel value="Data cadastro" />
+						<p:inputText value="#{produtoBean.produto.dataCadastro}"
+							disabled="true" converter="localDateTimeConverter">
+							
+						</p:inputText>
 
 						<p:outputLabel value="Nome" />
 						<p:inputText value="#{produtoBean.produto.nome}" />
@@ -87,8 +107,9 @@
 
 						<p:outputLabel value="Valor Unitário" />
 						<p:inputText value="#{produtoBean.produto.valorUnitario}">
-							<f:convertNumber locale="pt_BR" minFractionDigits="2" />
-						</p:inputText>						
+							<f:convertNumber locale="pt_BR" minFractionDigits="2"
+								maxFractionDigits="2" />
+						</p:inputText>
 
 						<p:outputLabel value="Produto ativo ?" />
 						<p:selectBooleanCheckbox value="#{produtoBean.produto.ativo}" />
@@ -113,6 +134,7 @@
 				</div>
 			</h:form>
 		</p:dialog>
+
 
 	</ui:define>
 </ui:composition>

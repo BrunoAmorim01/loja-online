@@ -1,6 +1,7 @@
 package br.com.lojaonline.model;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,6 +19,10 @@ import org.hibernate.validator.constraints.NotBlank;
 @Entity
 public class Produto extends GenericModel {
 
+	@NotNull
+	@Column(name="data_cadastro",nullable=false)
+	private LocalDate dataCadastro;
+	
 	@NotBlank
 	@Size(min = 3, max = 80)
 	@Column(length = 80, nullable = false, unique = true)
@@ -91,6 +96,14 @@ public class Produto extends GenericModel {
 
 	public void setAtivo(boolean ativo) {
 		this.ativo = ativo;
+	}
+
+	public LocalDate getDataCadastro() {
+		return dataCadastro;
+	}
+
+	public void setDataCadastro(LocalDate dataCadastro) {
+		this.dataCadastro = dataCadastro;
 	}
 
 }

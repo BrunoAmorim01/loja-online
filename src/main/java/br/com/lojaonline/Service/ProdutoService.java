@@ -1,5 +1,7 @@
 package br.com.lojaonline.Service;
 
+import java.time.LocalDate;
+
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
@@ -15,7 +17,7 @@ public class ProdutoService {
 
 	@Transactional
 	public Produto salvar(Produto produto) {
-
+		produto.setDataCadastro(LocalDate.now() );
 		return produtoDAO.merge(produto);
 	}
 

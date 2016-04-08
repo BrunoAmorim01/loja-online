@@ -33,13 +33,16 @@ public class ProdutoBean implements Serializable {
 
 	@PostConstruct
 	public void init() {
-
 		produtos = produtoService.getProdutoDAO().list("nome");
 	}
 
 	public void novo() {
 		produto = new Produto();
 		produto.setQuantidadeEstoque(0);
+		categorias = categoriaDAO.list("nome");
+	}
+
+	public void carregarCategorias() {
 		categorias = categoriaDAO.list("nome");
 	}
 
