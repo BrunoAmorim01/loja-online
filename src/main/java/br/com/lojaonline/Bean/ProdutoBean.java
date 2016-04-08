@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -11,6 +12,7 @@ import javax.inject.Named;
 import org.omnifaces.util.Messages;
 
 import br.com.lojaonline.DAO.CategoriaDAO;
+import br.com.lojaonline.DAO.ProdutoDAO;
 import br.com.lojaonline.Service.ProdutoService;
 import br.com.lojaonline.model.Categoria;
 import br.com.lojaonline.model.Produto;
@@ -24,7 +26,10 @@ public class ProdutoBean implements Serializable {
 	private ProdutoService produtoService;
 
 	@Inject
-	CategoriaDAO categoriaDAO;
+	private CategoriaDAO categoriaDAO;
+
+	@Inject
+	private ProdutoDAO produtoDAO;
 
 	private Produto produto;
 
@@ -33,7 +38,7 @@ public class ProdutoBean implements Serializable {
 
 	@PostConstruct
 	public void init() {
-		produtos = produtoService.getProdutoDAO().list("nome");
+		produtos = produtoDAO.list("nome");
 	}
 
 	public void novo() {
@@ -50,6 +55,13 @@ public class ProdutoBean implements Serializable {
 		produtoService.salvar(produto);
 		Messages.addGlobalInfo("Produto salvo com sucesso");
 		novo();
+		init();
+	}
+
+	public void excluir(ActionEvent event) {
+		produto = (Produto) event.getComponent().getAttributes().get("produtoSelecionado");
+		produtoService.excluir(produto);
+		Messages.addGlobalInfo("Produto " + produto.getNome() + " excluido com sucesso");
 		init();
 	}
 

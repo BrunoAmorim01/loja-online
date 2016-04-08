@@ -20,6 +20,11 @@ public class ProdutoService {
 		produto.setDataCadastro(LocalDate.now() );
 		return produtoDAO.merge(produto);
 	}
+	
+	@Transactional
+	public void excluir (Produto produto){
+		produtoDAO.remove(produto);
+	}
 
 	public ProdutoDAO getProdutoDAO() {
 		return produtoDAO;
