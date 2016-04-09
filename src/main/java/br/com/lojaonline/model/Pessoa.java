@@ -2,6 +2,7 @@ package br.com.lojaonline.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.Min;
@@ -38,8 +39,8 @@ public class Pessoa extends GenericModel{
 	private short numLogradouro;
 
 	@NotNull
-	@OneToOne
-	@JoinColumn(name="endereco_id",nullable=false)
+	@OneToOne	
+	@JoinColumn(name="endereco_id",nullable=false,foreignKey=@ForeignKey( name="FK_Endereco"))
 	private Endereco endereco;	
 
 	public String getNome() {
