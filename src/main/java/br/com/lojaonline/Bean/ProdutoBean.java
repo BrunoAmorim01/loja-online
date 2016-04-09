@@ -47,7 +47,7 @@ public class ProdutoBean implements Serializable {
 
 	public void novo() {
 		produto = new Produto();
-		produto.setQuantidadeEstoque(0);
+		produto.setQuantidade(Short.parseShort(0+""));
 		fabricantes = fabricanteDAO.list("nome");
 		categorias = categoriaDAO.list("nome");
 	}

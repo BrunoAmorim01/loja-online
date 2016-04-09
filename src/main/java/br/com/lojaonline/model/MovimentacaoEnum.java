@@ -1,12 +1,12 @@
 package br.com.lojaonline.model;
 
-public enum EstoqueEnum {
+public enum MovimentacaoEnum {
 
-	ENTRADA("Entrada"), SAIDA("Saída");
+	ENTRADA("Entrada"), SAIDA("Saída"),DEVOLUCAO("Devolução");
 
 	private String descricao;
 
-	private EstoqueEnum(String descricao) {
+	private MovimentacaoEnum(String descricao) {
 		this.descricao =descricao;
 	}
 

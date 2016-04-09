@@ -49,7 +49,7 @@ public class FabricanteBean implements Serializable {
 	public void excluir(ActionEvent event) {
 		fabricante = (Fabricante) event.getComponent().getAttributes().get("fabSelecionado");
 		fabricanteDAO.remove(fabricante);
-		Messages.addGlobalInfo("Fabricante"+ "fabricante.getNome()"+"excluído com sucesso");
+		Messages.addGlobalInfo("Fabricante "+ fabricante.getNome()+" excluído com sucesso");
 		init();		
 	}
 

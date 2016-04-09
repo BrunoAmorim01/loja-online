@@ -35,15 +35,23 @@ public class Produto extends GenericModel {
 	@NotNull
 	@Column(nullable=false)
 	private boolean ativo;
+	
+	@NotNull(message = "é obrigatório")
+	@Min(0)
+	@Max(value = 9999, message = "tem um valor muito alto")
+	private Short quantidade;
+	
+	@NotNull(message = "é obrigatório")
+	@Min(0)
+	@Max(value = 9999, message = "tem um valor muito alto")
+	private Short quantidadeMinima;
 
 	@NotNull
 	@Column(name="valor_unitario",nullable=false,precision=10,scale=2)
 	private BigDecimal valorUnitario;
 	
-	@Min(0)
-	@Max(value=9999,message="tem um valor muito alto")
-	@Column(name="quantidade_estoque",length=5)
-	private Integer quantidadeEstoque;
+	@Column(length = 20)
+	private String dimensoes;
 	
 	@NotNull
 	@ManyToOne
@@ -54,6 +62,8 @@ public class Produto extends GenericModel {
 	@ManyToOne
 	@JoinColumn(name="categoria_id",nullable=false,foreignKey=@ForeignKey(name="FK_Categoria"))
 	private Categoria categoria;
+	
+	
 
 	public String getNome() {
 		return nome;
@@ -77,14 +87,6 @@ public class Produto extends GenericModel {
 
 	public void setValorUnitario(BigDecimal valorUnitario) {
 		this.valorUnitario = valorUnitario;
-	}
-
-	public Integer getQuantidadeEstoque() {
-		return quantidadeEstoque;
-	}
-
-	public void setQuantidadeEstoque(Integer quantidadeEstoque) {
-		this.quantidadeEstoque = quantidadeEstoque;
 	}
 
 	public Categoria getCategoria() {
@@ -117,6 +119,30 @@ public class Produto extends GenericModel {
 
 	public void setFabricante(Fabricante fabricante) {
 		this.fabricante = fabricante;
+	}
+
+	public String getDimensoes() {
+		return dimensoes;
+	}
+
+	public void setDimensoes(String dimensoes) {
+		this.dimensoes = dimensoes;
+	}
+
+	public Short getQuantidade() {
+		return quantidade;
+	}
+
+	public void setQuantidade(Short quantidade) {
+		this.quantidade = quantidade;
+	}
+
+	public Short getQuantidadeMinima() {
+		return quantidadeMinima;
+	}
+
+	public void setQuantidadeMinima(Short quantidadeMinima) {
+		this.quantidadeMinima = quantidadeMinima;
 	}
 
 }
