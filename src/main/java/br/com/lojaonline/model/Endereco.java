@@ -12,21 +12,29 @@ import org.hibernate.validator.constraints.NotBlank;
 @SuppressWarnings("serial")
 @Entity
 public class Endereco extends GenericModel {	
-
-	@NotBlank
-	@Column(length=10,nullable=false)
-	private String tipo;
-	
+		
 	@NotBlank
 	@Column(length=150,nullable=false)
-	private String logradouro;
-	
-	@NotBlank
-	@Column(length=8,nullable=false)
-	private Integer cep;
+	private String logradouro;	
 	
 	@NotNull
 	@ManyToOne
 	@JoinColumn(name="bairro_id",nullable=false,foreignKey=@ForeignKey(name="FK_Bairro"))
 	private Bairro bairro;
+
+	public String getLogradouro() {
+		return logradouro;
+	}
+
+	public void setLogradouro(String logradouro) {
+		this.logradouro = logradouro;
+	}
+
+	public Bairro getBairro() {
+		return bairro;
+	}
+
+	public void setBairro(Bairro bairro) {
+		this.bairro = bairro;
+	}
 }

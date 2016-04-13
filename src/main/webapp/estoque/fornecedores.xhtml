@@ -1,0 +1,178 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	template="/WEB-INF/templates/TemplatePadrao.xhtml">
+
+	<ui:define name="titulo">Fornecedores</ui:define>
+
+	<ui:define name="corpo">
+
+		<h:form id="frmPesquisa">
+			<p:panel header="Pesquisa de fornecedores">
+				<p:dataTable id="dataTable" value="#{fornecedorBean.fornecedores}"
+					var="fornecedor" reflow="true" paginatorAlwaysVisible="false"
+					rows="10" emptyMessage="Nenhum registro encontrado">
+
+					<f:facet name="header">
+						<p:commandButton value="Novo fornecedor" icon="fa fa-plus"
+							title="Adiciona um novo fornecedor ao sistema"
+							actionListener="#{enderecoBean.listEstados()}"
+							action="#{fornecedorBean.novo()}"
+							oncomplete="PF('dialog').show();"
+							update=":frmCadastro:painelcadastro" />
+					</f:facet>
+
+					<p:column headerText="Codigo" width="100">
+						<h:outputLabel value="#{fornecedor.codigo}" />
+					</p:column>
+
+					<p:column headerText="Nome" width="100">
+						<h:outputLabel value="#{fornecedor.pessoa.nome}" />
+					</p:column>
+
+					<p:column headerText="CPNJ" width="100">
+						<h:outputLabel value="#{fornecedor.cnpj}" />
+					</p:column>
+
+					<p:column headerText="Contato" width="100">
+						<h:outputLabel value="#{fornecedor.pessoa.telfixo}" />
+					</p:column>
+
+				</p:dataTable>
+
+			</p:panel>
+
+			<p:confirmDialog global="true" closable="false">
+				<p:commandButton value="Sim" styleClass="ui-confirmdialog-yes"
+					icon="fa fa-check" />
+				<p:commandButton value="Não" styleClass="ui-confirmdialog-no"
+					icon="fa fa-close" />
+			</p:confirmDialog>
+
+		</h:form>
+
+		<p:dialog header="Fornecedor" widgetVar="dialog" modal="true"
+			resizable="false" closable="true" responsive="true" draggable="false">
+
+			<h:form id="frmCadastro">
+
+				<div class="ui-fluid">
+
+					<p:panelGrid id="painelcadastro" layout="grid" columns="1"
+						styleClass="ui-panelgrid-blank" columnClasses="ui-grid-col-12">
+
+						<p:panel header="Empresa">
+
+							<p:panelGrid columns="4">
+								<p:outputLabel for="cnpj" value="CNPJ" />
+								<p:inputText id="cnpj" value="#{fornecedorBean.fornecedor.cnpj}" />
+
+								<p:outputLabel for="inscEstadual" value="Inscrição Estadual" />
+								<p:inputText id="inscEstadual"
+									value="#{fornecedorBean.fornecedor.inscricaoEstadual}" />
+
+								<p:outputLabel for="razaoSocial" value="Razão Social" />
+								<p:inputText id="razaoSocial"
+									value="#{fornecedorBean.fornecedor.razaoSocial}" />
+
+								<p:outputLabel for="nomeFantasia" value="Nome Fantasia" />
+								<p:inputText id="nomeFantasia"
+									value="#{fornecedorBean.fornecedor.pessoa.nome}" />
+
+							</p:panelGrid>
+						</p:panel>
+
+
+						<p:panel header="Endereco">
+
+							<p:panelGrid columns="4">
+
+								<p:outputLabel for="estado" value="Estado" />
+								<p:selectOneMenu id="estado" value="#{enderecoBean.estado}"
+									converter="omnifaces.SelectItemsConverter">
+									<f:selectItem noSelectionOption="true"
+										itemLabel="Selecione uma opção" />
+									<f:selectItems value="#{enderecoBean.estados}" var="e"
+										itemLabel="#{e.sigla} - #{e.nome}" itemValue="#{e}" />
+
+									<p:ajax listener="#{enderecoBean.listCidadePorEstado}"
+										update="cidade bairro logradouro" />
+								</p:selectOneMenu>
+
+								<p:outputLabel for="cidade" value="Cidade" />
+								<p:selectOneMenu id="cidade" value="#{enderecoBean.cidade}"
+									converter="omnifaces.SelectItemsConverter" filter="true">
+									<f:selectItem noSelectionOption="true"
+										itemLabel="Selecione uma opção" />
+									<f:selectItems value="#{enderecoBean.cidades}" var="c"
+										itemLabel="#{c.nome}" itemValue="#{c}">
+									</f:selectItems>
+
+									<p:ajax listener="#{enderecoBean.listBairroPorCidade()}"
+										update="bairro logradouro" />
+								</p:selectOneMenu>
+
+								<p:outputLabel for="bairro" value="Bairro" />
+								<p:selectOneMenu id="bairro" value="#{enderecoBean.bairro}"
+									converter="omnifaces.SelectItemsConverter" filter="true"
+									filterMatchMode="contains">
+									<f:selectItem noSelectionOption="true"
+										itemLabel="Selecione uma opção" />
+									<f:selectItems value="#{enderecoBean.bairros}" var="b"
+										itemLabel="#{b.nome}" itemValue="#{b}">
+									</f:selectItems>
+									<p:ajax process="@this" />
+								</p:selectOneMenu>
+
+								<p:outputLabel for="logradouro" value="Logradouro" />
+								<p:autoComplete id="logradouro"
+									value="#{fornecedorBean.fornecedor.pessoa.endereco}"
+									completeMethod="#{enderecoBean.listEnderecoPorBairro}"
+									var="end" itemLabel="#{end.logradouro}" itemValue="#{end}"
+									dropdown="true" minQueryLength="4" maxResults="10">
+
+									<o:converter converterId="omnifaces.ListConverter"
+										list="#{enderecoBean.enderecos}" />
+								</p:autoComplete>
+
+								<p:outputLabel for="num" value="Nº" />
+								<p:inputText id="num"
+									value="#{fornecedorBean.fornecedor.pessoa.numLogradouro}" />
+							</p:panelGrid>
+
+						</p:panel>
+
+						<p:panel header="Contato">
+
+							<p:panelGrid columns="4">
+
+								<p:outputLabel for="email" value="E-mail" />
+								<p:inputText id="email"
+									value="#{fornecedorBean.fornecedor.pessoa.email}" />
+
+								<p:outputLabel for="telfixo" value="Tel. fixo" />
+								<p:inputText id="telfixo"
+									value="#{fornecedorBean.fornecedor.pessoa.telfixo}" />
+
+								<p:outputLabel for="telCelular" value="Tel. Celular" />
+								<p:inputText id="telCelular"
+									value="#{fornecedorBean.fornecedor.pessoa.telCelular}" />
+
+							</p:panelGrid>
+
+						</p:panel>
+					</p:panelGrid>
+
+
+				</div>
+			</h:form>
+
+		</p:dialog>
+
+	</ui:define>
+
+</ui:composition>

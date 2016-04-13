@@ -21,4 +21,20 @@ public class Cidade extends GenericModel {
 	@ManyToOne
 	@JoinColumn(name = "estado_id", nullable = false, foreignKey = @ForeignKey(name = "FK_Estado"))
 	private Estado estado;
+	
+	public String getNome() {
+		return nome;
+	}
+	
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+	
+	public Estado getEstado() {
+		return estado;
+	}
+	
+	public void setEstado(Estado estado) {
+		this.estado = estado;
+	}
 }

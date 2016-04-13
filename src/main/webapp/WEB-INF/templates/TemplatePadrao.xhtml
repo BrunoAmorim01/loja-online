@@ -48,10 +48,10 @@
 				aria-expanded="false">Produtos<span class="caret"></span></a>
 
 				<ul class="dropdown-menu">
-					<li><h:link value="Fabricantes"	outcome="/produtos/fabricantes" /></li>
+					<li><h:link value="Fabricantes"
+							outcome="/produtos/fabricantes" /></li>
 					<li><h:link value="Categorias" outcome="/produtos/categorias" /></li>
 					<li><h:link value="Produtos" outcome="/produtos/produtos" /></li>
-
 
 					<li role="separator" class="divider"></li>
 					<li><a href="#">Separated link</a></li>
@@ -59,7 +59,14 @@
 					<li><a href="#">One more separated link</a></li>
 				</ul></li>
 
-			<li><a href="#">Link 2</a></li>
+			<li class="dropdown"><a href="#" class="dropdown-toggle"
+				data-toggle="dropdown" role="button" aria-haspopup="true"
+				aria-expanded="false">Estoque<span class="caret"></span></a>
+
+				<ul class="dropdown-menu">
+					<li><h:link value="Fornecedores"
+							outcome="/estoque/fornecedores" /></li>
+				</ul></li>
 			<li><a href="#">Link 3</a></li>
 		</ul>
 	</div>
