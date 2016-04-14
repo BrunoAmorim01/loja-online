@@ -16,6 +16,7 @@ import br.com.lojaonline.model.Bairro;
 import br.com.lojaonline.model.Cidade;
 import br.com.lojaonline.model.Estado;
 import br.com.lojaonline.model.Fornecedor;
+import br.com.lojaonline.model.Pessoa;
 
 @SuppressWarnings("serial")
 @Named
@@ -31,6 +32,8 @@ public class FornecedorBean implements Serializable {
 	
 	@PostConstruct
 	public void init(){
+		fornecedor=new Fornecedor();
+		fornecedor.setPessoa(new Pessoa());
 		fornecedores=fornecedorDAO.list();
 	}
 	
@@ -39,7 +42,7 @@ public class FornecedorBean implements Serializable {
 	}
 	
 	public void salvar (){
-		
+		System.out.println(fornecedor.getCnpj());
 	}
 	
 	public void excluir (ActionEvent event){

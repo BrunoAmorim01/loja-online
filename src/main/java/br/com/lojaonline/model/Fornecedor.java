@@ -17,8 +17,8 @@ public class Fornecedor extends GenericModel {
 	private String razaoSocial;
 	
 	@CNPJ
-	@Column(length=14,nullable=false)
-	private Integer cnpj;	
+	@Column(length=14,nullable=false,unique=true)
+	private String cnpj;	
 	
 	@Column(length=12)
 	private Integer inscricaoEstadual;
@@ -36,13 +36,13 @@ public class Fornecedor extends GenericModel {
 		this.razaoSocial = razaoSocial;
 	}	
 
-	public Integer getCnpj() {
+	public String getCnpj() {
 		return cnpj;
 	}
-
-	public void setCnpj(Integer cnpj) {
+	
+	public void setCnpj(String cnpj) {
 		this.cnpj = cnpj;
-	}
+	}	
 
 	public Integer getInscricaoEstadual() {
 		return inscricaoEstadual;

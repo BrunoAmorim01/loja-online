@@ -55,21 +55,24 @@
 
 		</h:form>
 
+
 		<p:dialog header="Fornecedor" widgetVar="dialog" modal="true"
-			resizable="false" closable="true" responsive="true" draggable="false">
+			resizable="false" closable="true" draggable="false" responsive="true" height="460">
 
 			<h:form id="frmCadastro">
 
 				<div class="ui-fluid">
+					<p:panelGrid id="painelcadastro" columns="1"
+						styleClass="ui-panelgrid-blank">
 
-					<p:panelGrid id="painelcadastro" layout="grid" columns="1"
-						styleClass="ui-panelgrid-blank" columnClasses="ui-grid-col-12">
+						<p:panel header="Dados gerais">
 
-						<p:panel header="Empresa">
-
-							<p:panelGrid columns="4">
+							<p:panelGrid columns="4" layout="grid"
+								columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4">
 								<p:outputLabel for="cnpj" value="CNPJ" />
-								<p:inputText id="cnpj" value="#{fornecedorBean.fornecedor.cnpj}" />
+								<p:inputMask id="cnpj" mask="99.999.999/9999-99"
+									value="#{fornecedorBean.fornecedor.cnpj}">
+								</p:inputMask>
 
 								<p:outputLabel for="inscEstadual" value="Inscrição Estadual" />
 								<p:inputText id="inscEstadual"
@@ -84,13 +87,14 @@
 									value="#{fornecedorBean.fornecedor.pessoa.nome}" />
 
 							</p:panelGrid>
+
 						</p:panel>
 
 
 						<p:panel header="Endereco">
 
-							<p:panelGrid columns="4">
-
+							<p:panelGrid columns="4" layout="grid"
+								columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4">
 								<p:outputLabel for="estado" value="Estado" />
 								<p:selectOneMenu id="estado" value="#{enderecoBean.estado}"
 									converter="omnifaces.SelectItemsConverter">
@@ -142,13 +146,15 @@
 								<p:outputLabel for="num" value="Nº" />
 								<p:inputText id="num"
 									value="#{fornecedorBean.fornecedor.pessoa.numLogradouro}" />
-							</p:panelGrid>
 
+							</p:panelGrid>
 						</p:panel>
 
-						<p:panel header="Contato">
 
-							<p:panelGrid columns="4">
+						<p:panel header="Endereco">
+
+							<p:panelGrid columns="4" layout="grid"
+								columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4">
 
 								<p:outputLabel for="email" value="E-mail" />
 								<p:inputText id="email"
@@ -165,6 +171,14 @@
 							</p:panelGrid>
 
 						</p:panel>
+
+					</p:panelGrid>
+
+					<p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank">
+						<p:commandButton icon="ui-icon-check"  value="Salvar" action="#{fornecedorBean.salvar}"
+							process="painelcadastro"></p:commandButton>
+
+						<p:commandButton icon="ui-icon-close" value="Fechar" oncomplete="PF('dialog').hide()"></p:commandButton>
 					</p:panelGrid>
 
 
@@ -172,6 +186,7 @@
 			</h:form>
 
 		</p:dialog>
+
 
 	</ui:define>
 
