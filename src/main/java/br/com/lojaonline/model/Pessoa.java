@@ -1,5 +1,7 @@
 package br.com.lojaonline.model;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
@@ -16,24 +18,27 @@ import org.hibernate.validator.constraints.NotBlank;
 @Entity
 public class Pessoa extends GenericModel{
 
+	@NotNull
+	@Column(name="data_hora_cadastro",nullable=false)
+	private LocalDateTime dataHoraCadastro;
+	
 	@NotBlank
 	@Size(max = 150, min = 3)
 	@Column(length = 150, unique = true, nullable = false)
 	private String nome;
 	
+	@NotBlank
 	@Email
 	@Column(length = 200, unique = true, nullable = false)
 	private String email;	
-	
-	
+		
 	@Column(name="tel_fixo",nullable=false,length = 10)
-	private Integer telfixo;
-	
+	private Long telfixo;	
 	
 	@Column(name="tel_celular",nullable=false,length = 11)
-	private Integer telCelular;
+	private Long telCelular;
 	
-	@NotNull(message = "é obrigatório")
+	@NotNull
 	@Min(1)
 	@Column(name = "quantidade_estoque", nullable = false, length = 6)
 	private short numLogradouro;
@@ -59,19 +64,19 @@ public class Pessoa extends GenericModel{
 		this.email = email;
 	}
 
-	public Integer getTelfixo() {
+	public Long getTelfixo() {
 		return telfixo;
 	}
 
-	public void setTelfixo(Integer telfixo) {
+	public void setTelfixo(Long telfixo) {
 		this.telfixo = telfixo;
 	}
 
-	public Integer getTelCelular() {
+	public Long getTelCelular() {
 		return telCelular;
 	}
 
-	public void setTelCelular(Integer telCelular) {
+	public void setTelCelular(Long telCelular) {
 		this.telCelular = telCelular;
 	}
 
@@ -89,5 +94,13 @@ public class Pessoa extends GenericModel{
 
 	public void setNumLogradouro(short numLogradouro) {
 		this.numLogradouro = numLogradouro;
+	}
+
+	public LocalDateTime getDataHoraCadastro() {
+		return dataHoraCadastro;
+	}
+
+	public void setDataHoraCadastro(LocalDateTime dataHoraCadastro) {
+		this.dataHoraCadastro = dataHoraCadastro;
 	}
 }

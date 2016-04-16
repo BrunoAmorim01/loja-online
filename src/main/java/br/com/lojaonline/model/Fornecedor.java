@@ -7,21 +7,24 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.br.CNPJ;
 
 @SuppressWarnings("serial")
 @Entity
 public class Fornecedor extends GenericModel {
 
+	@NotBlank
 	@Column(length = 60, unique = true, nullable = false)
 	private String razaoSocial;
 	
-	@CNPJ
+	//@CNPJ
+		
 	@Column(length=14,nullable=false,unique=true)
-	private String cnpj;	
+	private Long cnpj;	
 	
-	@Column(length=12)
-	private Integer inscricaoEstadual;
+	@Column(length=20)
+	private String inscricaoEstadual;
 	
 	@NotNull
 	@OneToOne
@@ -36,19 +39,19 @@ public class Fornecedor extends GenericModel {
 		this.razaoSocial = razaoSocial;
 	}	
 
-	public String getCnpj() {
+	public Long getCnpj() {
 		return cnpj;
 	}
 	
-	public void setCnpj(String cnpj) {
+	public void setCnpj(Long cnpj) {
 		this.cnpj = cnpj;
-	}	
-
-	public Integer getInscricaoEstadual() {
+	}
+	
+	public String getInscricaoEstadual() {
 		return inscricaoEstadual;
 	}
 
-	public void setInscricaoEstadual(Integer inscricaoEstadual) {
+	public void setInscricaoEstadual(String inscricaoEstadual) {
 		this.inscricaoEstadual = inscricaoEstadual;
 	}
 

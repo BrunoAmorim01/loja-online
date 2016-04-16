@@ -7,6 +7,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.transaction.Transactional;
 
 import br.com.lojaonline.DAO.BairroDAO;
 import br.com.lojaonline.DAO.CidadeDAO;
@@ -16,6 +17,7 @@ import br.com.lojaonline.model.Bairro;
 import br.com.lojaonline.model.Cidade;
 import br.com.lojaonline.model.Endereco;
 import br.com.lojaonline.model.Estado;
+import br.com.lojaonline.model.Pessoa;
 
 @SuppressWarnings("serial")
 @Named
@@ -60,11 +62,22 @@ public class EnderecoBean implements Serializable {
 	
 	public void listBairroPorCidade(){
 		bairros=bairroDAO.listaPorCidade(cidade.getCodigo());
+	}	
+	
+	public void carregaEnderecoPessoa(Pessoa pessoa){		
+		estado=pessoa.getEndereco().getBairro().getCidade().getEstado();	
+		listEstados();
+		
+		cidade=pessoa.getEndereco().getBairro().getCidade();
+		listCidadePorEstado();
+		
+		bairro=pessoa.getEndereco().getBairro();
+		listBairroPorCidade();		
 	}
 	
 	public List<Endereco> listEnderecoPorBairro(String logradouro){
-		
-		return enderecoDAO.listaPorBairro(bairro.getCodigo(), logradouro);
+		enderecos =enderecoDAO.listaPorBairro(bairro.getCodigo(), logradouro);
+		return enderecos;
 	}
 
 	public List<Estado> getEstados() {
