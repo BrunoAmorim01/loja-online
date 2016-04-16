@@ -50,9 +50,11 @@
 					</p:column>
 
 					<p:column headerText="Contato" width="50">
-						<h:outputLabel styleClass="telefone" value="#{fornecedor.pessoa.telfixo}" />						
-						
-						<h:outputLabel styleClass="telefone" value="#{fornecedor.pessoa.telCelular}" />
+						<h:outputLabel styleClass="telefone"
+							value="#{fornecedor.pessoa.telfixo}" />
+
+						<h:outputLabel styleClass="telefone"
+							value="#{fornecedor.pessoa.telCelular}" />
 					</p:column>
 
 					<p:column headerText="Opções" width="200">
@@ -190,8 +192,11 @@
 									completeMethod="#{enderecoBean.listEnderecoPorBairro}"
 									var="end" itemLabel="#{end.logradouro}" itemValue="#{end}"
 									minQueryLength="3" maxResults="10" effect="fade"
-									converter="enderecoConverter">
-									<p:ajax process="@this" />
+									converter="enderecoConverter" forceSelection="true">
+									<o:converter converterId="omnifaces.ListConverter"
+										list="#{enderecoBean.enderecos}"/>
+										
+										<p:ajax process="@this" />
 								</p:autoComplete>
 
 								<p:outputLabel for="num" value="Nº" />

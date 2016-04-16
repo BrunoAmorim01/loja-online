@@ -72,7 +72,9 @@ public class EnderecoBean implements Serializable {
 		listCidadePorEstado();
 		
 		bairro=pessoa.getEndereco().getBairro();
-		listBairroPorCidade();		
+		listBairroPorCidade();
+		
+		listEnderecoPorBairro(pessoa.getEndereco().getLogradouro());
 	}
 	
 	public List<Endereco> listEnderecoPorBairro(String logradouro){

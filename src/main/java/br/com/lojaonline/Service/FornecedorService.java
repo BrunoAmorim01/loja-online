@@ -21,8 +21,7 @@ public class FornecedorService {
 	private FornecedorDAO fornecedorDAO;
 
 	@Transactional
-	public Fornecedor salvar(Fornecedor fornecedor) {
-		System.out.println("service");
+	public Fornecedor salvar(Fornecedor fornecedor) {		
 		
 		if (fornecedor.getPessoa().getDataHoraCadastro() == null) {
 			fornecedor.getPessoa().setDataHoraCadastro(LocalDateTime.now());

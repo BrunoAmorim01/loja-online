@@ -38,8 +38,7 @@ public class FornecedorBean implements Serializable {
 	private List<Fornecedor> fornecedores;
 
 	@PostConstruct
-	public void init() {
-		System.out.println("init");
+	public void init() {		
 		fornecedor = new Fornecedor();
 		fornecedor.setPessoa(new Pessoa());
 		fornecedores = fornecedorDAO.list();
@@ -60,9 +59,7 @@ public class FornecedorBean implements Serializable {
 	public void carregarFornecedor(ActionEvent event){
 		
 		Fornecedor fornecedorSelecionado=  (Fornecedor) event.getComponent().getAttributes().get("fornecedorSelecionado");				
-		fornecedor=fornecedorDAO.porID(fornecedorSelecionado.getCodigo());
-		Messages.addGlobalInfo(fornecedor.getPessoa().getEmail());
-		
+		fornecedor=fornecedorDAO.porID(fornecedorSelecionado.getCodigo());		
 	}
 
 	public void excluir(ActionEvent event) {
