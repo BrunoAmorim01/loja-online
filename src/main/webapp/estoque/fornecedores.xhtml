@@ -34,22 +34,22 @@
 						<h:outputLabel value="#{fornecedor.codigo}" />
 					</p:column>
 
-					<p:column headerText="Nome" width="100">
+					<p:column headerText="Nome" >
 						<h:outputLabel value="#{fornecedor.pessoa.nome}" />
 					</p:column>
 
-					<p:column headerText="CNPJ" width="100">
+					<p:column headerText="CNPJ" width="150">
 						<h:outputLabel value="#{fornecedor.cnpj}"
 							converter="cnpjConverter" />
 					</p:column>
 
-					<p:column headerText="Estado/Cidade" width="100">
+					<p:column headerText="Estado/Cidade" width="250">
 						<h:outputLabel
 							value="#{fornecedor.pessoa.endereco.bairro.cidade.estado.sigla} - #{fornecedor.pessoa.endereco.bairro.cidade.nome}" />
 
 					</p:column>
 
-					<p:column headerText="Contato" width="50">
+					<p:column headerText="Contato" width="150">
 						<h:outputLabel styleClass="telefone"
 							value="#{fornecedor.pessoa.telfixo}" />
 
@@ -118,7 +118,7 @@
 								<p:outputLabel for="dataHora" value="Data/Hora cadastro" />
 								<p:inputText id="dataHora"
 									value="#{fornecedorBean.fornecedor.pessoa.dataHoraCadastro}"
-									disabled="true" />
+									disabled="true" converter="localDateTimeConverter"/>									
 
 								<p:outputLabel for="cnpj" value="CNPJ" />
 								<p:inputMask id="cnpj" mask="99.999.999/9999-99"

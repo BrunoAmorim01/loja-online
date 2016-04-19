@@ -17,12 +17,15 @@ public class ProdutoService {
 
 	@Transactional
 	public Produto salvar(Produto produto) {
-		produto.setDataCadastro(LocalDate.now() );
+		if (produto.getDataCadastro() == null) {
+			produto.setDataCadastro(LocalDate.now());
+		}
+
 		return produtoDAO.merge(produto);
 	}
-	
+
 	@Transactional
-	public void excluir (Produto produto){
+	public void excluir(Produto produto) {
 		produtoDAO.remove(produto);
 	}
 

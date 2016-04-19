@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/WEB-INF/templates/TemplatePadrao.xhtml">
+
+	<ui:define name="titulo">Entrada de Produtos</ui:define>
+
+	<ui:define name="corpo">
+
+		<h:form id="frmPesquisa">
+
+			<p:panel header="Pesquisa">
+			
+				<p:toolbar>
+				
+					<p:toolbarGroup>
+						<p:commandButton value="Pesquisar"
+							actionListener="#{pesquisaEstoqueEntradaBean.pesquisar()}"
+							update="@form" />
+					</p:toolbarGroup>
+
+					<p:toolbarGroup align="right">
+						<p:button value="Nova entrada" />
+					</p:toolbarGroup>
+					
+				</p:toolbar>
+
+
+				<p:panelGrid id="opcoesPesquisa" layout="grid"
+					styleClass="ui-panelgrid-blank" columns="4"
+					columnClasses="ui-grid-col-1,ui-grid-col-2,ui-grid-col-1,ui-grid-col-2">
+
+					<p:outputLabel value="Data inicio" />
+					<p:calendar
+						value="#{pesquisaEstoqueEntradaBean.entradaFilter.dataDe}" />
+
+					<p:outputLabel value="Data Fim" />
+					<p:calendar
+						value="#{pesquisaEstoqueEntradaBean.entradaFilter.dataAte}" />
+
+					<p:outputLabel value="Nota Fiscal" />
+					<p:inputText
+						value="#{pesquisaEstoqueEntradaBean.entradaFilter.notaFiscal}" />
+
+					<p:outputLabel value="Produto" />
+					<p:inputText
+						value="#{pesquisaEstoqueEntradaBean.entradaFilter.produtoNome}" />
+
+				</p:panelGrid>
+			</p:panel>
+
+
+			<p:dataTable id="dataTable"
+				value="#{pesquisaEstoqueEntradaBean.estoque}" var="estoque"
+				reflow="true" paginatorAlwaysVisible="false" rows="15"
+				emptyMessage="Nenhum registro encontrado" style="margin-top:10px">
+
+				<p:column headerText="Codigo">
+					<h:outputText value="#{estoque.codigo}" />
+				</p:column>
+
+				<p:column headerText="Nota Fiscal">
+					<h:outputText value="#{estoque.nNotaFiscal}" />
+				</p:column>
+
+				<p:column headerText="Data da Compra">
+					<h:outputText value="#{estoque.dataCompra}" />
+				</p:column>
+
+				<p:column headerText="Total">
+					<h:outputText value="#{estoque.valorTotal}" />
+				</p:column>
+
+			</p:dataTable>
+
+		</h:form>
+
+	</ui:define>
+</ui:composition>
