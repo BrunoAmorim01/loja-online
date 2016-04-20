@@ -18,4 +18,22 @@ public class EstoqueMovimentacaoEntrada extends GenericModel {
 	@ManyToOne
 	@JoinColumn(name="estoque_id",nullable = false, foreignKey = @ForeignKey(name = "FK_estoque"))
 	private Estoque estoque;
+
+	public Movimentacao getMovimentacao() {
+		return movimentacao;
+	}
+
+	public void setMovimentacao(Movimentacao movimentacao) {
+		this.movimentacao = movimentacao;
+	}
+
+	public Estoque getEstoque() {
+		return estoque;
+	}
+
+	public void setEstoque(Estoque estoque) {
+		this.estoque = estoque;
+	}
+	
+	
 }

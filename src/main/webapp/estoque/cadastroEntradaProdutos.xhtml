@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/WEB-INF/templates/TemplatePadrao.xhtml"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+	<ui:define name="titulo">Entrada de Produtos</ui:define>
+
+	<ui:define name="corpo">
+
+		<h:form id="frmPesquisa">
+
+			<p:panel header="Pesquisa" id="pnl">
+				<p:panelGrid id="listaProduto" layout="grid"
+					styleClass="ui-panelgrid-blank" columns="4"
+					columnClasses="ui-grid-col-1,ui-grid-col-2,ui-grid-col-1,ui-grid-col-2">
+
+					<p:outputLabel for="produto" value="Produto" />
+					<p:autoComplete id="produto"
+						completeMethod="#{cadastroEstoqueEntradaBean.completarProduto}"
+						value="#{cadastroEstoqueEntradaBean.estoqueEntrada.movimentacao.produto}"
+						var="prod" itemLabel="#{prod.nome}" itemValue="#{prod}"
+						minQueryLength="3" maxResults="10" effect="fade"
+						forceSelection="true" required="true"
+						requiredMessage="Produto é pbrigatório">
+
+						<o:converter converterId="omnifaces.ListConverter"
+							list="#{cadastroEstoqueEntradaBean.produtos}" />
+					</p:autoComplete>
+
+					<p:outputLabel for="qtde" value="Quantidade" />
+					<p:inputText id="qtde"
+						value="#{cadastroEstoqueEntradaBean.estoqueEntrada.movimentacao.quantidade}"
+						maxlength="6">
+						<pe:keyFilter regEx="/[0-9]/" />
+					</p:inputText>
+
+					<p:outputLabel for="vUnit" value="Valor unitário" />
+					<p:inputText id="vUnit"
+						value="#{cadastroEstoqueEntradaBean.estoqueEntrada.movimentacao.valorUnitario}" />
+
+
+
+
+				</p:panelGrid>
+			</p:panel>
+			
+			<p:panelGrid id="listaProdutoBotoes" layout="grid"
+					styleClass="ui-panelgrid-blank" columns="2"
+					columnClasses="ui-grid-col-1,ui-grid-col-1" rendered="true">
+
+					<p:commandButton value="Adicionar"
+						update="frmPesquisa:listaProduto :frmCadastro msgGlobal" process="@this listaProduto"
+						actionListener="#{cadastroEstoqueEntradaBean.addProdutoALista}" />
+
+					<p:commandButton value="Limpar" />
+
+				</p:panelGrid>
+		</h:form>
+
+		<h:form id="frmCadastro">
+			<p:dataTable id="dataTable" style="margin-top:10px"
+				value="#{cadastroEstoqueEntradaBean.estoque.movimentacao}"
+				var="movimentacao" reflow="true" paginatorAlwaysVisible="false"
+				rows="10" emptyMessage="Nenhum registro encontrado">
+
+				<p:column headerText="Produto">
+					<h:outputLabel value="#{movimentacao.movimentacao.produto.nome}" />
+				</p:column>
+
+				<p:column headerText="QTDE">
+					<h:outputLabel value="#{movimentacao.movimentacao.quantidade}" />
+				</p:column>
+
+				<p:column headerText="Valor unitário">
+					<h:outputLabel value="#{movimentacao.movimentacao.valorUnitario}" />
+				</p:column>
+
+			</p:dataTable>
+
+
+
+		</h:form>
+	</ui:define>
+
+</ui:composition>

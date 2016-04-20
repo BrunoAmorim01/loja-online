@@ -4,7 +4,8 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:p="http://primefaces.org/ui" 
+	xmlns:o="http://omnifaces.org/ui"
 	template="/WEB-INF/templates/TemplatePadrao.xhtml">
 
 	<ui:define name="titulo">Fornecedores</ui:define>
@@ -34,7 +35,7 @@
 						<h:outputLabel value="#{fornecedor.codigo}" />
 					</p:column>
 
-					<p:column headerText="Nome" >
+					<p:column headerText="Nome">
 						<h:outputLabel value="#{fornecedor.pessoa.nome}" />
 					</p:column>
 
@@ -118,7 +119,7 @@
 								<p:outputLabel for="dataHora" value="Data/Hora cadastro" />
 								<p:inputText id="dataHora"
 									value="#{fornecedorBean.fornecedor.pessoa.dataHoraCadastro}"
-									disabled="true" converter="localDateTimeConverter"/>									
+									disabled="true" converter="localDateTimeConverter" />
 
 								<p:outputLabel for="cnpj" value="CNPJ" />
 								<p:inputMask id="cnpj" mask="99.999.999/9999-99"
@@ -194,9 +195,9 @@
 									minQueryLength="3" maxResults="10" effect="fade"
 									converter="enderecoConverter" forceSelection="true">
 									<o:converter converterId="omnifaces.ListConverter"
-										list="#{enderecoBean.enderecos}"/>
-										
-										<p:ajax process="@this" />
+										list="#{enderecoBean.enderecos}" />
+
+									<p:ajax process="@this" />
 								</p:autoComplete>
 
 								<p:outputLabel for="num" value="Nº" />
@@ -207,7 +208,7 @@
 						</p:panel>
 
 
-						<p:panel header="Endereco">
+						<p:panel header="Contato">
 
 							<p:panelGrid columns="4" layout="grid"
 								columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4">

@@ -15,4 +15,9 @@ public class EstoqueDAO extends GenericDAO<Estoque> {
 		return null;
 		
 	}
+	
+	public Estoque AdicionarEstoque(Estoque estoque){
+		return estoque;
+		
+	}
 }
