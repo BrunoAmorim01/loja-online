@@ -14,53 +14,82 @@
 	<ui:define name="corpo">
 
 		<h:form id="frmPesquisa">
+			<div class="ui-fluid">
+				
+				<p:panel header="Informações gerais">
+					
+					<p:panelGrid id="infGeral" layout="grid"
+						styleClass="ui-panelgrid-blank" columns="4"
+						columnClasses="ui-grid-col-1,ui-grid-col-2,ui-grid-col-1,ui-grid-col-2">
 
-			<p:panel header="Pesquisa" id="pnl">
-				<p:panelGrid id="listaProduto" layout="grid"
-					styleClass="ui-panelgrid-blank" columns="4"
-					columnClasses="ui-grid-col-1,ui-grid-col-2,ui-grid-col-1,ui-grid-col-2">
+						<p:outputLabel for="dataCompra" value="Data da compra" />
+						<p:calendar id="dataCompra"
+							value="#{cadastroEstoqueEntradaBean.estoque.dataCompra}" maxdate="#{now}"/>
 
-					<p:outputLabel for="produto" value="Produto" />
-					<p:autoComplete id="produto"
-						completeMethod="#{cadastroEstoqueEntradaBean.completarProduto}"
-						value="#{cadastroEstoqueEntradaBean.estoqueEntrada.movimentacao.produto}"
-						var="prod" itemLabel="#{prod.nome}" itemValue="#{prod}"
-						minQueryLength="3" maxResults="10" effect="fade"
-						forceSelection="true" required="true"
-						requiredMessage="Produto é pbrigatório">
+						<p:outputLabel for="nf" value="Nota fiscal" />
+						<p:inputText id="nf"
+							value="#{cadastroEstoqueEntradaBean.estoque.nNotaFiscal}" />
 
-						<o:converter converterId="omnifaces.ListConverter"
-							list="#{cadastroEstoqueEntradaBean.produtos}" />
-					</p:autoComplete>
+						<p:outputLabel for="vTotal" value="Valor total" />
+						<p:inputText id="vTotal"
+							value="#{cadastroEstoqueEntradaBean.estoque.valorTotal}" />
 
-					<p:outputLabel for="qtde" value="Quantidade" />
-					<p:inputText id="qtde"
-						value="#{cadastroEstoqueEntradaBean.estoqueEntrada.movimentacao.quantidade}"
-						maxlength="6">
-						<pe:keyFilter regEx="/[0-9]/" />
-					</p:inputText>
-
-					<p:outputLabel for="vUnit" value="Valor unitário" />
-					<p:inputText id="vUnit"
-						value="#{cadastroEstoqueEntradaBean.estoqueEntrada.movimentacao.valorUnitario}" />
+						<p:outputLabel for="obs" value="Observações" />
+						<p:inputTextarea id="obs"
+							value="#{cadastroEstoqueEntradaBean.estoque.observacoes}" />
 
 
+					</p:panelGrid>
 
+				</p:panel>
 
-				</p:panelGrid>
-			</p:panel>
-			
-			<p:panelGrid id="listaProdutoBotoes" layout="grid"
+				<p:panel header="Produtos" id="pnl">
+				
+					<p:panelGrid id="listaProduto" layout="grid"
+						styleClass="ui-panelgrid-blank" columns="4"
+						columnClasses="ui-grid-col-1,ui-grid-col-2,ui-grid-col-1,ui-grid-col-2">
+
+						<p:outputLabel for="produto" value="Produto" />
+						<p:autoComplete id="produto"
+							completeMethod="#{cadastroEstoqueEntradaBean.completarProduto}"
+							value="#{cadastroEstoqueEntradaBean.estoqueEntrada.movimentacao.produto}"
+							var="prod" itemLabel="#{prod.nome}" itemValue="#{prod}"
+							minQueryLength="3" maxResults="10" effect="fade"
+							forceSelection="true" required="true"
+							requiredMessage="Produto é pbrigatório">
+
+							<o:converter converterId="omnifaces.ListConverter"
+								list="#{cadastroEstoqueEntradaBean.produtos}" />
+						</p:autoComplete>
+
+						<p:outputLabel for="qtde" value="Quantidade" />
+						<p:inputText id="qtde"
+							value="#{cadastroEstoqueEntradaBean.estoqueEntrada.movimentacao.quantidade}"
+							maxlength="6">
+							<pe:keyFilter regEx="/[0-9]/" />
+						</p:inputText>
+
+						<p:outputLabel for="vUnit" value="Valor unitário" />
+
+						<pe:inputNumber id="vUnit" symbol="R$ "
+							value="#{cadastroEstoqueEntradaBean.estoqueEntrada.movimentacao.valorUnitario}"
+							minValue="0.00" maxValue="999999.99" />
+					</p:panelGrid>
+				</p:panel>
+
+				<p:panelGrid id="listaProdutoBotoes" layout="grid"
 					styleClass="ui-panelgrid-blank" columns="2"
 					columnClasses="ui-grid-col-1,ui-grid-col-1" rendered="true">
 
-					<p:commandButton value="Adicionar"
-						update="frmPesquisa:listaProduto :frmCadastro msgGlobal" process="@this listaProduto"
+					<p:commandButton value="Adicionar a lista"
+						update="frmPesquisa:listaProduto :frmPesquisa:infGeral :frmCadastro:dataTable  msgGlobal"
+						process="@this listaProduto"
 						actionListener="#{cadastroEstoqueEntradaBean.addProdutoALista}" />
 
 					<p:commandButton value="Limpar" />
 
 				</p:panelGrid>
+			</div>
 		</h:form>
 
 		<h:form id="frmCadastro">
@@ -68,6 +97,8 @@
 				value="#{cadastroEstoqueEntradaBean.estoque.movimentacao}"
 				var="movimentacao" reflow="true" paginatorAlwaysVisible="false"
 				rows="10" emptyMessage="Nenhum registro encontrado">
+
+				<f:facet name="header">Lista de produtos</f:facet>
 
 				<p:column headerText="Produto">
 					<h:outputLabel value="#{movimentacao.movimentacao.produto.nome}" />
@@ -81,11 +112,20 @@
 					<h:outputLabel value="#{movimentacao.movimentacao.valorUnitario}" />
 				</p:column>
 
+				<p:column headerText="Opções">
+
+					<p:commandButton icon="fa fa-trash" value="remover"
+						actionListener="#{cadastroEstoqueEntradaBean.RemoverProdutoLista}"
+						update="dataTable">
+						<f:attribute name="produtoSelecionado" value="#{movimentacao}" />
+					</p:commandButton>
+
+				</p:column>
+								
 			</p:dataTable>
 
-
-
 		</h:form>
+
 	</ui:define>
 
 </ui:composition>

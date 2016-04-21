@@ -18,21 +18,28 @@ import javax.validation.constraints.NotNull;
 public class Estoque extends GenericModel {
 
 	@OneToMany(mappedBy = "estoque", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-	//@JoinColumn(name="movimentacao_id",nullable = false, foreignKey = @ForeignKey(name = "FK_movimentacao"))
+	// @JoinColumn(name="movimentacao_id",nullable = false, foreignKey =
+	// @ForeignKey(name = "FK_movimentacao"))
 	private List<EstoqueMovimentacaoEntrada> movimentacao;
-	
+
 	@NotNull
 	@Column(name = "data_hora", nullable = false)
 	private LocalDate dataCompra;
-	
-	@Column(length=100,nullable=false)
-	private String nNotaFiscal;	
-	
+
+	@Column(length = 100, nullable = false)
+	private String nNotaFiscal;
+
 	@Column(nullable = false, precision = 7, scale = 2)
 	private BigDecimal valorTotal;
-	
+
 	@Column(columnDefinition = "text")
 	private String observacoes;
+
+	public void calcularValorTotal() {
+		valorTotal = movimentacao.stream().map(m -> m.getMovimentacao().getValorParcial()).reduce(BigDecimal.ZERO,
+				BigDecimal::add);
+
+	}
 
 	public List<EstoqueMovimentacaoEntrada> getMovimentacao() {
 		return movimentacao;
@@ -73,6 +80,5 @@ public class Estoque extends GenericModel {
 	public void setObservacoes(String observacoes) {
 		this.observacoes = observacoes;
 	}
-	
 
 }

@@ -2,13 +2,10 @@ package br.com.lojaonline.Bean;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
-import java.util.Optional;
 
 import javax.annotation.PostConstruct;
+import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -65,17 +62,32 @@ public class CadastroEstoqueEntradaBean implements Serializable {
 		return result;
 	}
 
-	public void addProdutoALista() {		
-		
-		if (!existeProdutoNaLista()) {			
+	public void addProdutoALista() {
+
+		if (!existeProdutoNaLista()) {
+
 			this.estoque.getMovimentacao().add(estoqueEntrada);
-			
-//			estoqueEntrada = new EstoqueMovimentacaoEntrada();
-//			estoqueEntrada.setMovimentacao(new Movimentacao());
+
+			estoqueEntrada = new EstoqueMovimentacaoEntrada();
+			estoqueEntrada.setMovimentacao(new Movimentacao());
+			estoque.calcularValorTotal();
+			//System.out.println(estoque.getValorTotal());
 		} else {
 			Messages.addGlobalError("Produto ja existe na lista");
 		}
+
+	}
+
+	public void RemoverProdutoLista(ActionEvent event) {
+		EstoqueMovimentacaoEntrada entrada = (EstoqueMovimentacaoEntrada) event.getComponent().getAttributes()
+				.get("produtoSelecionado");
+
+		EstoqueMovimentacaoEntrada result = estoque.getMovimentacao().stream()
+				.filter(e -> e.getMovimentacao().getProduto().equals(entrada.getMovimentacao().getProduto()))
+				.findFirst().get();		
 		
+		estoque.getMovimentacao().remove(result);
+		estoque.calcularValorTotal();
 	}
 
 	public Estoque getEstoque() {
@@ -87,8 +99,6 @@ public class CadastroEstoqueEntradaBean implements Serializable {
 	}
 
 	public EstoqueMovimentacaoEntrada getEstoqueEntrada() {
-		// if(estoqueEntrada.getMovimentacao()==null)
-		// estoqueEntrada.setMovimentacao(new Movimentacao());
 
 		return estoqueEntrada;
 	}

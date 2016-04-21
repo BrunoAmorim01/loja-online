@@ -1,5 +1,6 @@
 package br.com.lojaonline.model;
 
+import java.beans.Transient;
 import java.math.BigDecimal;
 
 import javax.persistence.Column;
@@ -23,10 +24,15 @@ public class Movimentacao {
 	@NotNull
 	@Column(name = "valor_unitario", nullable = false, precision = 10, scale = 2)
 	private BigDecimal valorUnitario;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "produto_id", nullable = false, foreignKey = @ForeignKey(name = "FK_produto"))
 	private Produto produto;
+
+	@Transient
+	public BigDecimal getValorParcial() {
+		return valorUnitario.multiply(new BigDecimal(quantidade));
+	}
 
 	public Short getQuantidade() {
 		return quantidade;
