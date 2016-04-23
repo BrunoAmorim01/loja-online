@@ -19,4 +19,6 @@ public class ProdutoDAO extends GenericDAO<Produto> {
 		return query.getResultList();
 
 	}
+	
+	
 }

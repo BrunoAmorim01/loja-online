@@ -47,6 +47,11 @@ public class CadastroEstoqueEntradaBean implements Serializable {
 		//
 	}
 
+	public void salvar() {
+		estoque =estoqueService.salvar(estoque);
+		Messages.addGlobalInfo("Estoque salvo com sucesso");		
+	}
+
 	public List<Produto> completarProduto(String nome) {
 		produtos = produtoDAO.porNome(nome);
 
@@ -65,13 +70,14 @@ public class CadastroEstoqueEntradaBean implements Serializable {
 	public void addProdutoALista() {
 
 		if (!existeProdutoNaLista()) {
-
+			estoqueEntrada.setEstoque(estoque);
 			this.estoque.getMovimentacao().add(estoqueEntrada);
 
 			estoqueEntrada = new EstoqueMovimentacaoEntrada();
 			estoqueEntrada.setMovimentacao(new Movimentacao());
+
 			estoque.calcularValorTotal();
-			//System.out.println(estoque.getValorTotal());
+			// System.out.println(estoque.getValorTotal());
 		} else {
 			Messages.addGlobalError("Produto ja existe na lista");
 		}
@@ -84,8 +90,8 @@ public class CadastroEstoqueEntradaBean implements Serializable {
 
 		EstoqueMovimentacaoEntrada result = estoque.getMovimentacao().stream()
 				.filter(e -> e.getMovimentacao().getProduto().equals(entrada.getMovimentacao().getProduto()))
-				.findFirst().get();		
-		
+				.findFirst().get();
+
 		estoque.getMovimentacao().remove(result);
 		estoque.calcularValorTotal();
 	}

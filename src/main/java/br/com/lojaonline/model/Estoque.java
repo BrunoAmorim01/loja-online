@@ -1,5 +1,6 @@
 package br.com.lojaonline.model;
 
+import java.beans.Transient;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
@@ -13,11 +14,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 @SuppressWarnings("serial")
 @Entity
 public class Estoque extends GenericModel {
 
 	@OneToMany(mappedBy = "estoque", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	//@NotEmpty
 	// @JoinColumn(name="movimentacao_id",nullable = false, foreignKey =
 	// @ForeignKey(name = "FK_movimentacao"))
 	private List<EstoqueMovimentacaoEntrada> movimentacao;
@@ -39,6 +43,12 @@ public class Estoque extends GenericModel {
 		valorTotal = movimentacao.stream().map(m -> m.getMovimentacao().getValorParcial()).reduce(BigDecimal.ZERO,
 				BigDecimal::add);
 
+	}
+	
+	@Transient
+	public String getDataAtual(){
+		System.out.println(LocalDate.now().toString());
+		return LocalDate.now().toString();
 	}
 
 	public List<EstoqueMovimentacaoEntrada> getMovimentacao() {
