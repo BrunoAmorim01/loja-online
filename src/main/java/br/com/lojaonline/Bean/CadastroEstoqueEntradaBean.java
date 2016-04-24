@@ -24,8 +24,8 @@ import br.com.lojaonline.model.Produto;
 @ViewScoped
 public class CadastroEstoqueEntradaBean implements Serializable {
 
+	private Long codigo;
 	private Estoque estoque;
-
 	private EstoqueMovimentacaoEntrada estoqueEntrada;
 
 	private List<Produto> produtos;
@@ -36,20 +36,33 @@ public class CadastroEstoqueEntradaBean implements Serializable {
 	@Inject
 	private ProdutoDAO produtoDAO;
 
-	@PostConstruct
+	// @PostConstruct
 	public void init() {
 		estoque = new Estoque();
 		estoque.setMovimentacao(new ArrayList<>());
 		estoqueEntrada = new EstoqueMovimentacaoEntrada();
 		estoqueEntrada.setMovimentacao(new Movimentacao());
-		// estoqueEntrada.setMovimentacao(new Movimentacao());
-		// estoqueEntrada.getMovimentacao().setProduto(new Produto());;
-		//
+	}
+
+	public void carregarEntrada() {
+		if (codigo != null) {
+			estoque = estoqueService.findId(codigo);
+
+			if (estoque == null)
+				init();
+			else {
+				estoqueEntrada = new EstoqueMovimentacaoEntrada();
+				estoqueEntrada.setMovimentacao(new Movimentacao());
+			}
+		} else {
+			init();
+		}
+
 	}
 
 	public void salvar() {
-		estoque =estoqueService.salvar(estoque);
-		Messages.addGlobalInfo("Estoque salvo com sucesso");		
+		estoque = estoqueService.salvar(estoque);
+		Messages.addGlobalInfo("Estoque salvo com sucesso");
 	}
 
 	public List<Produto> completarProduto(String nome) {
@@ -121,4 +134,11 @@ public class CadastroEstoqueEntradaBean implements Serializable {
 		this.produtos = produtos;
 	}
 
+	public Long getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(Long codigo) {
+		this.codigo = codigo;
+	}
 }

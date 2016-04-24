@@ -17,12 +17,11 @@ public class EstoqueService {
 
 	@Transactional
 	public Estoque salvar(Estoque estoque) {
-		
 
-		if (!estoque.getMovimentacao().isEmpty()) {			
-			
+		if (!estoque.getMovimentacao().isEmpty()) {
+
 			Estoque result = estoqueDAO.merge(estoque);
-			
+
 			if (estoque.getCodigo() == null) {
 				estoqueDAO.AdicionarEstoque(result);
 			}
@@ -33,5 +32,9 @@ public class EstoqueService {
 			return null;
 		}
 
+	}
+
+	public Estoque findId(long codigo) {
+		return estoqueDAO.porIdEager(codigo);
 	}
 }

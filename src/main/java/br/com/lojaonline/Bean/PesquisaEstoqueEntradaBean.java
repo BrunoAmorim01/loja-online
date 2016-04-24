@@ -28,7 +28,7 @@ public class PesquisaEstoqueEntradaBean implements Serializable {
 
 	@PostConstruct
 	public void init() {
-		estoques = estoqueDAO.list();
+		estoques = estoqueDAO.list("dataCompra");
 		filter = new EstoqueMovimentacaoEntradaFilter();
 	}
 

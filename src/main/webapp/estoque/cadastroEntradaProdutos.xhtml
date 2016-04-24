@@ -12,13 +12,21 @@
 	<ui:define name="titulo">Entrada de Produtos</ui:define>
 
 	<ui:define name="corpo">
+		<f:metadata>
+			<f:viewParam name="codigo"
+				value="#{cadastroEstoqueEntradaBean.codigo}" />
+			<f:viewAction
+				action="#{cadastroEstoqueEntradaBean.carregarEntrada()}" />
+		</f:metadata>
+
 
 		<h:form id="frmPesquisa">
 
 			<p:toolbar style="margin-top: 20px;">
 				<p:toolbarGroup>
-					<p:button value="Novo" outcome="/estoque/cadastroEntradaProdutos" />
-					<p:commandButton value="Salvar"
+					<p:button value="Novo" icon="fa fa-plus"
+						outcome="/estoque/cadastroEntradaProdutos" />
+					<p:commandButton value="Salvar" icon="ui-icon-check"
 						actionListener="#{cadastroEstoqueEntradaBean.salvar}"
 						process="@this infGeral :frmCadastro:dataTable"
 						update="infGeral :frmCadastro:dataTable msgGlobal" />
@@ -27,7 +35,7 @@
 
 				<p:toolbarGroup align="right">
 
-					<p:button value="Pesquisa"
+					<p:button value="Pesquisa" icon="fa fa-search"
 						outcome="/estoque/pesquisaEntradaProdutos" />
 				</p:toolbarGroup>
 
@@ -41,15 +49,19 @@
 						styleClass="ui-panelgrid-blank" columns="4"
 						columnClasses="ui-grid-col-1,ui-grid-col-2,ui-grid-col-1,ui-grid-col-2">
 
-						<p:outputLabel for="dataCompra" value="Data da compra" />
-						
-						<p:calendar id="dataCompra"
-							value="#{cadastroEstoqueEntradaBean.estoque.dataCompra}"
-							pattern="dd/MM/yyyy" converter="primefacesCalendarConverter" maxdate="now()"/>
+						<p:outputLabel value="Codigo" />
+						<p:outputLabel
+							value="#{cadastroEstoqueEntradaBean.estoque.codigo}" />
 
 						<p:outputLabel for="nf" value="Nota fiscal" />
 						<p:inputText id="nf"
 							value="#{cadastroEstoqueEntradaBean.estoque.nNotaFiscal}" />
+
+						<p:outputLabel for="dataCompra" value="Data da compra" />
+						<p:calendar id="dataCompra"
+							value="#{cadastroEstoqueEntradaBean.estoque.dataCompra}"
+							pattern="dd/MM/yyyy" converter="primefacesCalendarConverter"
+							maxdate="now()" />
 
 						<p:outputLabel for="vTotal" value="Valor total" />
 						<p:outputLabel id="vTotal"

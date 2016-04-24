@@ -7,26 +7,26 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	template="/WEB-INF/templates/TemplatePadrao.xhtml">
 
-	<ui:define name="titulo">Entrada de Produtos</ui:define>
+	<ui:define name="titulo">Pesquisa Estoque</ui:define>
 
 	<ui:define name="corpo">
 
 		<h:form id="frmPesquisa">
 
 			<p:panel header="Pesquisa">
-			
+
 				<p:toolbar>
-				
+
 					<p:toolbarGroup>
-						<p:commandButton value="Pesquisar"
+						<p:commandButton value="Pesquisar" icon ="fa fa-search"
 							actionListener="#{pesquisaEstoqueEntradaBean.pesquisar()}"
 							update="@form" />
 					</p:toolbarGroup>
 
 					<p:toolbarGroup align="right">
-						<p:button value="Nova entrada" />
+						<p:button value="Nova entrada" icon="fa fa-plus" outcome="/estoque/cadastroEntradaProdutos"/>
 					</p:toolbarGroup>
-					
+
 				</p:toolbar>
 
 
@@ -36,11 +36,13 @@
 
 					<p:outputLabel value="Data inicio" />
 					<p:calendar
-						value="#{pesquisaEstoqueEntradaBean.entradaFilter.dataDe}" />
+						value="#{pesquisaEstoqueEntradaBean.entradaFilter.dataDe}"
+						converter="primefacesCalendarConverter" />
 
 					<p:outputLabel value="Data Fim" />
 					<p:calendar
-						value="#{pesquisaEstoqueEntradaBean.entradaFilter.dataAte}" />
+						value="#{pesquisaEstoqueEntradaBean.entradaFilter.dataAte}"
+						converter="primefacesCalendarConverter" maxdate="now()" />
 
 					<p:outputLabel value="Nota Fiscal" />
 					<p:inputText
@@ -55,7 +57,7 @@
 
 
 			<p:dataTable id="dataTable"
-				value="#{pesquisaEstoqueEntradaBean.estoque}" var="estoque"
+				value="#{pesquisaEstoqueEntradaBean.estoques}" var="estoque"
 				reflow="true" paginatorAlwaysVisible="false" rows="15"
 				emptyMessage="Nenhum registro encontrado" style="margin-top:10px">
 
@@ -68,11 +70,21 @@
 				</p:column>
 
 				<p:column headerText="Data da Compra">
-					<h:outputText value="#{estoque.dataCompra}" />
+					<h:outputText value="#{estoque.dataCompra}"
+						converter="primefacesCalendarConverter" />
 				</p:column>
 
 				<p:column headerText="Total">
-					<h:outputText value="#{estoque.valorTotal}" />
+					<h:outputText value="#{estoque.valorTotal}">
+						<f:convertNumber type="currency" />
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="Opções">
+					<p:button value="Editar" icon="fa fa-edit" process="@this"
+						outcome="/estoque/cadastroEntradaProdutos">
+						<f:param name="codigo" value="#{estoque.codigo}"/>
+					</p:button>
 				</p:column>
 
 			</p:dataTable>
