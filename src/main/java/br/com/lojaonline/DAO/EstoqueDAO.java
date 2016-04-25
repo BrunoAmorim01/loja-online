@@ -1,12 +1,20 @@
 package br.com.lojaonline.DAO;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-import javax.transaction.Transactional;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Order;
+import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 import org.omnifaces.util.Messages;
 
@@ -19,7 +27,66 @@ public class EstoqueDAO extends GenericDAO<Estoque> {
 
 	public List<Estoque> pesquisar(EstoqueMovimentacaoEntradaFilter filter) {
 
-		return null;
+		CriteriaBuilder criteriaBuilder = manager.getCriteriaBuilder();
+		CriteriaQuery<Estoque> criteriaQuery = criteriaBuilder.createQuery(Estoque.class);
+		Root<Estoque> root = criteriaQuery.from(Estoque.class);
+
+		List<Predicate> condicoes = new ArrayList<>();
+
+		if (filter.getDataDe() != null) {
+			System.out.println("a");
+			Path<LocalDate> path = root.get("dataCompra");
+			Predicate predicate = criteriaBuilder.greaterThanOrEqualTo(path, filter.getDataDe());
+			condicoes.add(predicate);
+		}
+
+		if (filter.getDataAte() != null) {
+			System.out.println("b");
+			Path<LocalDate> path = root.get("dataCompra");
+			Predicate predicate = criteriaBuilder.lessThanOrEqualTo(path, filter.getDataAte());
+			condicoes.add(predicate);
+		}
+
+		if (filter.getNotaFiscal() != null && !filter.getNotaFiscal().isEmpty()) {
+			System.out.println("c");
+			Path<String> path = root.get("nNotaFiscal");
+			Predicate predicate = criteriaBuilder.equal(path, filter.getNotaFiscal());
+			condicoes.add(predicate);
+
+		}
+
+		if (filter.getProdutoNome() != null && !filter.getProdutoNome().isEmpty()) {
+			System.out.println("d");
+			Expression<String> path = root.join("movimentacao").get("movimentacao").get("produto").get("nome");
+
+			Predicate predicate = criteriaBuilder.like(criteriaBuilder.lower(path),
+					"%" + filter.getProdutoNome().toLowerCase() + "%");
+			condicoes.add(predicate);
+		}
+
+		Predicate[] condicoesComoArray = condicoes.toArray(new Predicate[condicoes.size()]);
+
+		Predicate todasCondicoes = criteriaBuilder.and(condicoesComoArray);
+
+		criteriaQuery.where(todasCondicoes);
+		criteriaQuery.orderBy(criteriaBuilder.desc(root.get("dataCompra")));
+
+		TypedQuery<Estoque> query = manager.createQuery(criteriaQuery);
+
+		return query.getResultList();
+
+		// UaiCriteria<Estoque> criteria =
+		// UaiCriteriaFactory.createQueryCriteria(manager, Estoque.class);
+		//
+		// if (filter.getDataAte() != null) {
+		// criteria.andLessOrEqualTo("dataCompra", filter.getDataAte());
+		// }
+		//
+		// if (filter.getDataDe() != null) {
+		// criteria.andGreaterOrEqualTo("dataCompra", filter.getDataDe());
+		// }
+		//
+		// return criteria.getResultList();
 
 	}
 

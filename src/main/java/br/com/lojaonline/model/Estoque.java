@@ -42,7 +42,6 @@ public class Estoque extends GenericModel {
 	public void calcularValorTotal() {
 		valorTotal = movimentacao.stream().map(m -> m.getMovimentacao().getValorParcial()).reduce(BigDecimal.ZERO,
 				BigDecimal::add);
-
 	}
 	
 	@Transient

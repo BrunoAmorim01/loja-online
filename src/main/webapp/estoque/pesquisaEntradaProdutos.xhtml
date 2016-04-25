@@ -18,13 +18,14 @@
 				<p:toolbar>
 
 					<p:toolbarGroup>
-						<p:commandButton value="Pesquisar" icon ="fa fa-search"
+						<p:commandButton value="Pesquisar" icon="fa fa-search"
 							actionListener="#{pesquisaEstoqueEntradaBean.pesquisar()}"
 							update="@form" />
 					</p:toolbarGroup>
 
 					<p:toolbarGroup align="right">
-						<p:button value="Nova entrada" icon="fa fa-plus" outcome="/estoque/cadastroEntradaProdutos"/>
+						<p:button value="Nova entrada" icon="fa fa-plus"
+							outcome="/estoque/cadastroEntradaProdutos" />
 					</p:toolbarGroup>
 
 				</p:toolbar>
@@ -37,14 +38,16 @@
 					<p:outputLabel value="Data inicio" />
 					<p:calendar
 						value="#{pesquisaEstoqueEntradaBean.entradaFilter.dataDe}"
-						converter="primefacesCalendarConverter" />
+						converter="primefacesCalendarConverter"
+						timeZone="America/Sao_Paulo" pattern="dd/MM/yyyy" maxdate="now()" />
 
 					<p:outputLabel value="Data Fim" />
 					<p:calendar
 						value="#{pesquisaEstoqueEntradaBean.entradaFilter.dataAte}"
-						converter="primefacesCalendarConverter" maxdate="now()" />
+						converter="primefacesCalendarConverter"
+						timeZone="America/Sao_Paulo" pattern="dd/MM/yyyy" maxdate="now()" />
 
-					<p:outputLabel value="Nota Fiscal" />
+					<p:outputLabel value=" Nota Fiscal" />
 					<p:inputText
 						value="#{pesquisaEstoqueEntradaBean.entradaFilter.notaFiscal}" />
 
@@ -83,7 +86,7 @@
 				<p:column headerText="Opções">
 					<p:button value="Editar" icon="fa fa-edit" process="@this"
 						outcome="/estoque/cadastroEntradaProdutos">
-						<f:param name="codigo" value="#{estoque.codigo}"/>
+						<f:param name="codigo" value="#{estoque.codigo}" />
 					</p:button>
 				</p:column>
 
