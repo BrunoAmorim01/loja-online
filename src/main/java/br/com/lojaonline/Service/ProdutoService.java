@@ -1,12 +1,16 @@
 package br.com.lojaonline.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 
+import org.hibernate.procedure.ProcedureCall;
+
 import br.com.lojaonline.DAO.ProdutoDAO;
+import br.com.lojaonline.DAO.filter.ProdutoFilter;
 import br.com.lojaonline.model.Produto;
 
 @RequestScoped
@@ -20,7 +24,6 @@ public class ProdutoService {
 		if (produto.getDataCadastro() == null) {
 			produto.setDataCadastro(LocalDate.now());
 		}
-
 		return produtoDAO.merge(produto);
 	}
 
@@ -29,7 +32,9 @@ public class ProdutoService {
 		produtoDAO.remove(produto);
 	}
 
-	public ProdutoDAO getProdutoDAO() {
-		return produtoDAO;
+	public List<Produto> pesquisar(ProdutoFilter filter) {
+		return produtoDAO.filtrados(filter);
+
 	}
+
 }

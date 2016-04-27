@@ -34,21 +34,21 @@ public class EstoqueDAO extends GenericDAO<Estoque> {
 		List<Predicate> condicoes = new ArrayList<>();
 
 		if (filter.getDataDe() != null) {
-			System.out.println("a");
+			
 			Path<LocalDate> path = root.get("dataCompra");
 			Predicate predicate = criteriaBuilder.greaterThanOrEqualTo(path, filter.getDataDe());
 			condicoes.add(predicate);
 		}
 
 		if (filter.getDataAte() != null) {
-			System.out.println("b");
+			
 			Path<LocalDate> path = root.get("dataCompra");
 			Predicate predicate = criteriaBuilder.lessThanOrEqualTo(path, filter.getDataAte());
 			condicoes.add(predicate);
 		}
 
 		if (filter.getNotaFiscal() != null && !filter.getNotaFiscal().isEmpty()) {
-			System.out.println("c");
+			
 			Path<String> path = root.get("nNotaFiscal");
 			Predicate predicate = criteriaBuilder.equal(path, filter.getNotaFiscal());
 			condicoes.add(predicate);
@@ -56,9 +56,8 @@ public class EstoqueDAO extends GenericDAO<Estoque> {
 		}
 
 		if (filter.getProdutoNome() != null && !filter.getProdutoNome().isEmpty()) {
-			System.out.println("d");
+			
 			Expression<String> path = root.join("movimentacao").get("movimentacao").get("produto").get("nome");
-
 			Predicate predicate = criteriaBuilder.like(criteriaBuilder.lower(path),
 					"%" + filter.getProdutoNome().toLowerCase() + "%");
 			condicoes.add(predicate);

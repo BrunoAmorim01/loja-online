@@ -14,10 +14,65 @@
 		<h:form id="frmPesquisa">
 
 			<p:panel header="Pesquisa de produtos">
+				<div class="ui-fluid">
+					<p:panelGrid id="gridPesquisa" layout="grid"
+						styleClass="ui-panelgrid-blank" columns="4"
+						columnClasses="ui-grid-col-1,ui-grid-col-2,ui-grid-col-1,ui-grid-col-2">
 
-				<p:dataTable id="datatable" value="#{produtoBean.produtos}"
-					var="produto" reflow="true" paginatorAlwaysVisible="false"
-					rows="10" emptyMessage="Nenhum registro encontrado">
+						<p:outputLabel for="categoria" value="Categoria" />
+						<p:selectOneMenu id="categoria"
+							value="#{pesquisaProdutoBean.produtoFilter.categoria}"
+							filter="true" filterMatchMode="contains"
+							converter="omnifaces.SelectItemsConverter">
+
+							<f:selectItem noSelectionOption="true"
+								itemLabel="Selecione uma opção" />
+							<f:selectItems value="#{pesquisaProdutoBean.categorias}"
+								var="cat" itemLabel="#{cat.nome}" itemValue="#{cat}"
+								filter="true" />
+
+						</p:selectOneMenu>
+
+						<p:outputLabel for="fabricante" value="Fabricante" />
+						<p:selectOneMenu id="fabricante"
+							value="#{pesquisaProdutoBean.produtoFilter.fabricante}"
+							filter="true" filterMatchMode="contains"
+							converter="omnifaces.SelectItemsConverter">
+
+							<f:selectItem noSelectionOption="true"
+								itemLabel="Selecione uma opção" />
+							<f:selectItems value="#{pesquisaProdutoBean.fabricantes}"
+								var="fab" itemLabel="#{fab.nome}" itemValue="#{fab}" />
+
+						</p:selectOneMenu>
+
+						<p:outputLabel for="sku" value="SKU" />
+						<p:inputText id="sku"
+							value="#{pesquisaProdutoBean.produtoFilter.sku}" />
+
+						<p:outputLabel for="produto" value="Produto" />
+						<p:inputText id="produto"
+							value="#{pesquisaProdutoBean.produtoFilter.produto}" />
+					</p:panelGrid>
+				</div>
+
+				<p:panelGrid id="gridPesquisaBotao" layout="grid"
+					styleClass="ui-panelgrid-blank" columns="1">
+					<p:commandButton icon="fa fa-search " value="Pesquisar"
+						process="@this gridPesquisa"
+						actionListener="#{pesquisaProdutoBean.pesquisar()}"
+						update="gridPesquisa datatable" />
+				</p:panelGrid>
+
+			</p:panel>
+
+
+			<p:panel header="Lista de produtos">
+
+				<p:dataTable id="datatable" widgetVar="produtosWV"
+					value="#{pesquisaProdutoBean.produtos}" var="produto" reflow="true"
+					paginatorAlwaysVisible="false" rows="10"
+					emptyMessage="Nenhum registro encontrado">
 
 					<f:facet name="header">
 						<p:commandButton value="Novo produto" icon="fa fa-plus"
@@ -32,7 +87,7 @@
 						<p:outputLabel value="#{produto.codigo}" />
 					</p:column>
 
-					<p:column headerText="SKU" width="100">
+					<p:column headerText="SKU" width="150" filterBy="#{produto.sku}">
 						<p:outputLabel value="#{produto.sku}" />
 					</p:column>
 
@@ -41,15 +96,38 @@
 						<p:outputLabel value="#{produto.nome}" />
 					</p:column>
 
-					<p:column headerText="Categoria" width="150">
+
+					<p:column headerText="Categoria" width="150"
+						filterBy="#{produto.categoria.nome}" filterMatchMode="exact">
+						<f:facet name="filter">
+							<p:selectOneMenu onchange="PF('produtosWV').filter()">
+								<f:selectItem itemLabel="Selecione" itemValue="#{null}"
+									noSelectionOption="true" />
+								<f:selectItems value="#{pesquisaProdutoBean.categorias}" var="c"
+									itemLabel="#{c.nome}" itemValue="#{c.nome}" />
+							</p:selectOneMenu>
+						</f:facet>
+
 						<p:outputLabel value="#{produto.categoria.nome}" />
 					</p:column>
 
-					<p:column headerText="Fabricante" width="150">
+
+					<p:column headerText="Fabricante" width="150"
+						filterBy="#{produto.fabricante.nome}" filterMatchMode="exact">
+
+						<f:facet name="filter">
+							<p:selectOneMenu onchange="PF('produtosWV').filter()">
+								<f:selectItem itemLabel="Selecione" itemValue="#{null}"
+									noSelectionOption="true" />
+								<f:selectItems value="#{pesquisaProdutoBean.fabricantes}"
+									var="f" itemLabel="#{f.nome}" itemValue="#{f.nome}" />
+							</p:selectOneMenu>
+						</f:facet>
+
 						<p:outputLabel value="#{produto.fabricante.nome}" />
 					</p:column>
 
-					<p:column headerText="Estoque" width="150">
+					<p:column headerText="Estoque" width="100">
 						<p:outputLabel value="#{produto.quantidade}" />
 					</p:column>
 
@@ -64,8 +142,7 @@
 						<p:commandButton value="Editar" title="Editar o produto"
 							icon="fa fa-edit" process="@this"
 							oncomplete="PF('dialog').show()"
-							update=":frmCadastro:painelcadastro"
-							action="#{produtoBean.carregarCategorias()}">
+							update=":frmCadastro:painelcadastro">
 							<f:setPropertyActionListener value="#{produto}"
 								target="#{produtoBean.produto}" />
 						</p:commandButton>
@@ -73,7 +150,7 @@
 						<p:commandButton style="margin-left:10px;" value="Excluir"
 							title="Excluir o produto" icon="fa fa-trash"
 							update=":msgGlobal :frmPesquisa:datatable"
-							actionListener="#{produtoBean.excluir}">
+							actionListener="#{pesquisaProdutoBean.excluir}">
 
 							<p:confirm icon="fa fa-exclamation-circle"
 								header="Confirmação de exclusão"
@@ -84,7 +161,6 @@
 						</p:commandButton>
 
 					</p:column>
-
 				</p:dataTable>
 			</p:panel>
 
@@ -99,13 +175,13 @@
 
 		<p:dialog header="Produto" widgetVar="dialog" resizable="false"
 			closable="false" responsive="true" modal="true" draggable="false"
-			height="350">
+			height="250">
 
 			<h:form id="frmCadastro">
 				<div class="ui-fluid">
 
-					<p:panelGrid id="painelcadastro" layout="grid" columns="2"
-						columnClasses="ui-grid-col-4,ui-grid-col-8"
+					<p:panelGrid id="painelcadastro" layout="grid" columns="4"
+						columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4,"
 						styleClass="ui-panelgrid-blank">
 
 						<p:outputLabel value="Data cadastro" />
@@ -124,7 +200,7 @@
 							converter="omnifaces.SelectItemsConverter">
 							<f:selectItem itemLabel="Selecione uma opção"
 								noSelectionOption="true" />
-							<f:selectItems value="#{produtoBean.fabricantes}" var="fab"
+							<f:selectItems value="#{pesquisaProdutoBean.fabricantes}" var="fab"
 								itemLabel="#{fab.nome}" itemValue="#{fab}" />
 						</p:selectOneMenu>
 
@@ -133,7 +209,7 @@
 							converter="omnifaces.SelectItemsConverter">
 							<f:selectItem itemLabel="Selecione uma opção"
 								noSelectionOption="true" />
-							<f:selectItems value="#{produtoBean.categorias}" var="prod"
+							<f:selectItems value="#{pesquisaProdutoBean.categorias}" var="prod"
 								itemLabel="#{prod.nome}" itemValue="#{prod}" />
 						</p:selectOneMenu>
 
@@ -150,7 +226,8 @@
 						<p:inputText value="#{produtoBean.produto.quantidadeMinima}" />
 
 						<p:outputLabel value="Quantidade" />
-						<p:inputText value="#{produtoBean.produto.quantidade}" disabled="true"/>
+						<p:inputText value="#{produtoBean.produto.quantidade}"
+							disabled="true" />
 
 						<p:outputLabel value="Dimensões" />
 						<p:inputText value="#{produtoBean.produto.dimensoes}" />
@@ -160,7 +237,7 @@
 						columnClasses="ui-grid-col-6,ui-grid-col-6"
 						styleClass="ui-panelgrid-blank">
 						<p:commandButton icon="ui-icon-check" value="Salvar"
-							action="#{produtoBean.salvar}"
+							action="#{produtoBean.salvar}"							
 							update="painelcadastro frmPesquisa grlGlobal"
 							process="@this,painelcadastro" />
 

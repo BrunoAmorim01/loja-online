@@ -27,11 +27,13 @@
 							update=":frmCadastro:painelcadastro" />
 					</f:facet>
 
-					<p:column headerText="Codigo" width="100">
+					<p:column headerText="Codigo" width="150" sortBy="#{fab.codigo}"
+						filterBy="#{fab.codigo}">
 						<h:outputLabel value="#{fab.codigo}" />
 					</p:column>
 
-					<p:column headerText="Nome">
+					<p:column headerText="Nome" sortBy="#{fab.nome}"
+						filterBy="#{fab.nome}" filterMatchMode="contains">
 						<h:outputLabel value="#{fab.nome}" />
 					</p:column>
 
@@ -69,41 +71,41 @@
 			</p:confirmDialog>
 		</h:form>
 
-		
-			<p:dialog header="Fabricante" widgetVar="dialog" modal="true"
-				resizable="false" closable="false" responsive="true"
-				draggable="false">
 
-				<h:form id="frmCadastro">
+		<p:dialog header="Fabricante" widgetVar="dialog" modal="true"
+			resizable="false" closable="false" responsive="true"
+			draggable="false">
 
-					<div class="ui-fluid">
-					
-						<p:panelGrid id="painelcadastro" layout="grid" columns="2"
-							columnClasses="ui-grid-col-3,ui-grid-col-8"
-							styleClass="ui-panelgrid-blank">
+			<h:form id="frmCadastro">
 
-							<p:outputLabel value="Nome" />
-							<p:inputText value="#{fabricanteBean.fabricante.nome}" />
-						</p:panelGrid>
+				<div class="ui-fluid">
 
-						<p:panelGrid layout="grid" columns="2"
-							columnClasses="ui-grid-col-6,ui-grid-col-6"
-							styleClass="ui-panelgrid-blank">
-							<p:commandButton icon="ui-icon-check" value="Salvar"
-								action="#{fabricanteBean.salvar}"
-								update="painelcadastro frmPesquisa grlGlobal"
-								process="@this,painelcadastro" />
+					<p:panelGrid id="painelcadastro" layout="grid" columns="2"
+						columnClasses="ui-grid-col-3,ui-grid-col-8"
+						styleClass="ui-panelgrid-blank">
 
-							<p:commandButton icon="ui-icon-close" value="Fechar"
-								oncomplete="PF('dialog').hide();" process="@this" />
-						</p:panelGrid>						
-						
-					</div>
-					
-				</h:form>
+						<p:outputLabel value="Nome" />
+						<p:inputText value="#{fabricanteBean.fabricante.nome}" />
+					</p:panelGrid>
 
-			</p:dialog>
-		
+					<p:panelGrid layout="grid" columns="2"
+						columnClasses="ui-grid-col-6,ui-grid-col-6"
+						styleClass="ui-panelgrid-blank">
+						<p:commandButton icon="ui-icon-check" value="Salvar"
+							action="#{fabricanteBean.salvar}"
+							update="painelcadastro frmPesquisa grlGlobal"
+							process="@this,painelcadastro" />
+
+						<p:commandButton icon="ui-icon-close" value="Fechar"
+							oncomplete="PF('dialog').hide();" process="@this" />
+					</p:panelGrid>
+
+				</div>
+
+			</h:form>
+
+		</p:dialog>
+
 	</ui:define>
 
 </ui:composition>

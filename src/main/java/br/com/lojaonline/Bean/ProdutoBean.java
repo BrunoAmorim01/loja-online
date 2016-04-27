@@ -26,50 +26,26 @@ public class ProdutoBean implements Serializable {
 
 	@Inject
 	private ProdutoService produtoService;
-
+	
+	
 	@Inject
-	private CategoriaDAO categoriaDAO;
-	@Inject
-	private ProdutoDAO produtoDAO;
-	@Inject
-	private FabricanteDAO fabricanteDAO;
+	private ProdutoDAO produtoDAO;	
 
 	private Produto produto;
 
 	private List<Produto> produtos;
-	private List<Categoria> categorias;
-	private List<Fabricante> fabricantes;
-
-	@PostConstruct
-	public void init() {
-		produtos = produtoDAO.list("nome");
-	}
 
 	public void novo() {
 		produto = new Produto();
 		produto.setQuantidade(Short.parseShort(0+""));
-		fabricantes = fabricanteDAO.list("nome");
-		categorias = categoriaDAO.list("nome");
+		
 	}
-
-	public void carregarCategorias() {
-		fabricantes = fabricanteDAO.list("nome");
-		categorias = categoriaDAO.list("nome");
-	}
-
+	
 	public void salvar() {
 		produtoService.salvar(produto);
 		Messages.addGlobalInfo("Produto salvo com sucesso");
-		novo();
-		init();
-	}
-
-	public void excluir(ActionEvent event) {
-		produto = (Produto) event.getComponent().getAttributes().get("produtoSelecionado");
-		produtoService.excluir(produto);
-		Messages.addGlobalInfo("Produto " + produto.getNome() + " excluido com sucesso");
-		init();
-	}
+		novo();	
+	}	
 
 	public Produto getProduto() {
 		return produto;
@@ -86,20 +62,5 @@ public class ProdutoBean implements Serializable {
 	public void setProdutos(List<Produto> produtos) {
 		this.produtos = produtos;
 	}
-
-	public List<Categoria> getCategorias() {
-		return categorias;
-	}
-
-	public void setCategorias(List<Categoria> categorias) {
-		this.categorias = categorias;
-	}
-
-	public List<Fabricante> getFabricantes() {
-		return fabricantes;
-	}
-
-	public void setFabricantes(List<Fabricante> fabricantes) {
-		this.fabricantes = fabricantes;
-	}
+	
 }
