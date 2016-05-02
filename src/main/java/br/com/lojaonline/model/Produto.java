@@ -26,7 +26,10 @@ public class Produto extends GenericModel {
 	@NotBlank
 	@Size(min = 3, max = 80)
 	@Column(length = 80, nullable = false, unique = true)
-	private String nome;
+	private String nome;	
+		
+	@Column(columnDefinition="text")
+	private String descricao;
 
 	@NotBlank
 	@Column(nullable = false, length = 20, unique = true)
@@ -143,6 +146,14 @@ public class Produto extends GenericModel {
 
 	public void setQuantidadeMinima(Short quantidadeMinima) {
 		this.quantidadeMinima = quantidadeMinima;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 
 }

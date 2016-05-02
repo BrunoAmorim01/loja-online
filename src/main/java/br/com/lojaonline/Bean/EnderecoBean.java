@@ -9,6 +9,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
 
+import org.omnifaces.util.Messages;
+
 import br.com.lojaonline.DAO.BairroDAO;
 import br.com.lojaonline.DAO.CidadeDAO;
 import br.com.lojaonline.DAO.EnderecoDAO;
@@ -22,7 +24,7 @@ import br.com.lojaonline.model.Pessoa;
 @SuppressWarnings("serial")
 @Named
 @ViewScoped
-public class EnderecoBean implements Serializable {	
+public class EnderecoBean implements Serializable {
 
 	private Estado estado;
 	private Cidade cidade;
@@ -40,45 +42,54 @@ public class EnderecoBean implements Serializable {
 	private List<Estado> estados;
 	private List<Cidade> cidades;
 	private List<Bairro> bairros;
-	private List<Endereco> enderecos;	
+	private List<Endereco> enderecos;
 
 	@PostConstruct
 	private void init() {
-		estado= new Estado();
-		cidade=new Cidade();
-		bairro= new Bairro();
+		listEstados();
 	}
 
 	public void listEstados() {
 		estados = estadoDAO.list("nome");
-		cidade=new Cidade();
-		bairro= new Bairro();
+		cidade = new Cidade();
+		bairro = new Bairro();
 	}
-	
-	public void listCidadePorEstado(){		
-		cidades=cidadeDAO.listaPorEstado(estado.getCodigo());	
-		bairro= new Bairro();
+
+	public void listCidadePorEstado() {
+		cidades = cidadeDAO.listaPorEstado(estado.getCodigo());
+		bairro = new Bairro();
 	}
-	
-	public void listBairroPorCidade(){
-		bairros=bairroDAO.listaPorCidade(cidade.getCodigo());
-	}	
-	
-	public void carregaEnderecoPessoa(Pessoa pessoa){		
-		estado=pessoa.getEndereco().getBairro().getCidade().getEstado();	
-		listEstados();
-		
-		cidade=pessoa.getEndereco().getBairro().getCidade();
-		listCidadePorEstado();
-		
-		bairro=pessoa.getEndereco().getBairro();
-		listBairroPorCidade();
-		
-		listEnderecoPorBairro(pessoa.getEndereco().getLogradouro());
+
+	public void listBairroPorCidade() {
+		bairros = bairroDAO.listaPorCidade(cidade.getCodigo());
 	}
-	
-	public List<Endereco> listEnderecoPorBairro(String logradouro){
-		enderecos =enderecoDAO.listaPorBairro(bairro.getCodigo(), logradouro);
+
+	public void carregaEnderecoPessoa(Pessoa pessoa) {
+		try {
+			if (pessoa != null) {
+				estado = pessoa.getEndereco().getBairro().getCidade().getEstado();
+				listEstados();
+
+				cidade = pessoa.getEndereco().getBairro().getCidade();
+				listCidadePorEstado();
+
+				bairro = pessoa.getEndereco().getBairro();
+				listBairroPorCidade();
+
+				listEnderecoPorBairro(pessoa.getEndereco().getLogradouro());
+			}
+		} catch (NullPointerException exception) {
+			estado = new Estado();
+			cidade = new Cidade();
+			bairro = new Bairro();
+
+			Messages.addGlobalError("Parametro invalido novo cadastro acionado");
+		}
+
+	}
+
+	public List<Endereco> listEnderecoPorBairro(String logradouro) {
+		enderecos = enderecoDAO.listaPorBairro(bairro.getCodigo(), logradouro);
 		return enderecos;
 	}
 
@@ -136,5 +147,5 @@ public class EnderecoBean implements Serializable {
 
 	public void setBairro(Bairro bairro) {
 		this.bairro = bairro;
-	}	
+	}
 }

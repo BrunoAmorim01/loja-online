@@ -1,6 +1,7 @@
 package br.com.lojaonline.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -30,5 +31,9 @@ public class FornecedorService {
 		Pessoa pessoa= pessoaDAO.merge(fornecedor.getPessoa());
 		fornecedor.setPessoa(pessoa);		
 		return fornecedorDAO.merge(fornecedor);
-	}	 
+	}	
+	
+	
+	
+	
 }

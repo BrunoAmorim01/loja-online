@@ -1,4 +1,4 @@
-package br.com.lojaonline.model;
+package br.com.lojaonline.model.enumerable;
 
 public enum MovimentacaoEnum {
 

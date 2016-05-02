@@ -5,7 +5,6 @@
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-	xmlns:pe="http://primefaces.org/ui/extensions"
 	template="/WEB-INF/templates/TemplatePadrao.xhtml">
 
 	<ui:define name="titulo">Produtos</ui:define>
@@ -174,8 +173,7 @@
 
 
 		<p:dialog header="Produto" widgetVar="dialog" resizable="false"
-			closable="false" responsive="true" modal="true" draggable="false"
-			height="250">
+			closable="false" responsive="true" modal="true" draggable="false" height="315">
 
 			<h:form id="frmCadastro">
 				<div class="ui-fluid">
@@ -189,32 +187,35 @@
 							disabled="true" converter="localDateConverter">
 						</p:inputText>
 
-						<p:outputLabel value="Nome" />
-						<p:inputText value="#{produtoBean.produto.nome}" />
+						<p:outputLabel for="nome" value="Nome" />
+						<p:inputText id="nome" value="#{produtoBean.produto.nome}" />
 
-						<p:outputLabel value="SKU" />
-						<p:inputText value="#{produtoBean.produto.sku}" />
+						<p:outputLabel for="sku" value="SKU" />
+						<p:inputText id="sku" value="#{produtoBean.produto.sku}" />
 
-						<p:outputLabel value="Fabricante" />
-						<p:selectOneMenu value="#{produtoBean.produto.fabricante}"
+						<p:outputLabel for="fabricante" value="Fabricante" />
+						<p:selectOneMenu id="fabricante"
+							value="#{produtoBean.produto.fabricante}"
 							converter="omnifaces.SelectItemsConverter">
 							<f:selectItem itemLabel="Selecione uma opção"
 								noSelectionOption="true" />
-							<f:selectItems value="#{pesquisaProdutoBean.fabricantes}" var="fab"
-								itemLabel="#{fab.nome}" itemValue="#{fab}" />
+							<f:selectItems value="#{pesquisaProdutoBean.fabricantes}"
+								var="fab" itemLabel="#{fab.nome}" itemValue="#{fab}" />
 						</p:selectOneMenu>
 
-						<p:outputLabel value="Categoria" />
-						<p:selectOneMenu value="#{produtoBean.produto.categoria}"
+						<p:outputLabel for="categoria" value="Categoria" />
+						<p:selectOneMenu id="categoria"
+							value="#{produtoBean.produto.categoria}"
 							converter="omnifaces.SelectItemsConverter">
 							<f:selectItem itemLabel="Selecione uma opção"
 								noSelectionOption="true" />
-							<f:selectItems value="#{pesquisaProdutoBean.categorias}" var="prod"
-								itemLabel="#{prod.nome}" itemValue="#{prod}" />
+							<f:selectItems value="#{pesquisaProdutoBean.categorias}"
+								var="prod" itemLabel="#{prod.nome}" itemValue="#{prod}" />
 						</p:selectOneMenu>
 
-						<p:outputLabel value="Valor Unitário" />
-						<p:inputText value="#{produtoBean.produto.valorUnitario}">
+						<p:outputLabel for="vUnit" value="Valor Unitário" />
+						<p:inputText id="vUnit"
+							value="#{produtoBean.produto.valorUnitario}">
 							<f:convertNumber locale="pt_BR" minFractionDigits="2"
 								maxFractionDigits="2" />
 						</p:inputText>
@@ -222,30 +223,44 @@
 						<p:outputLabel value="Produto ativo ?" />
 						<p:selectBooleanCheckbox value="#{produtoBean.produto.ativo}" />
 
-						<p:outputLabel value="Quantidade minima" />
-						<p:inputText value="#{produtoBean.produto.quantidadeMinima}" />
+						<p:outputLabel for="minimo" value="Quantidade minima" />
+						<p:inputText id="minimo"
+							value="#{produtoBean.produto.quantidadeMinima}" />
 
-						<p:outputLabel value="Quantidade" />
-						<p:inputText value="#{produtoBean.produto.quantidade}"
+						<p:outputLabel for="qtde" value="Quantidade" />
+						<p:inputText id="qtde" value="#{produtoBean.produto.quantidade}"
 							disabled="true" />
+						<p:outputLabel value="Descrição do produto" />
+						<p:scrollPanel mode="native" style="height:70px">
+							<p:inputTextarea value="#{produtoBean.produto.descricao}"
+								style="height:100px" />
 
-						<p:outputLabel value="Dimensões" />
-						<p:inputText value="#{produtoBean.produto.dimensoes}" />
+						</p:scrollPanel>
+
+
+
+						<p:outputLabel for="dimensoes" value="Dimensões" />
+						<p:inputText id="dimensoes"
+							value="#{produtoBean.produto.dimensoes}" />
+
+
+
 					</p:panelGrid>
-
-					<p:panelGrid layout="grid" columns="2"
-						columnClasses="ui-grid-col-6,ui-grid-col-6"
-						styleClass="ui-panelgrid-blank">
-						<p:commandButton icon="ui-icon-check" value="Salvar"
-							action="#{produtoBean.salvar}"							
-							update="painelcadastro frmPesquisa grlGlobal"
-							process="@this,painelcadastro" />
-
-						<p:commandButton icon="ui-icon-close" value="Fechar"
-							oncomplete="PF('dialog').hide();" process="@this" />
-					</p:panelGrid>
-
 				</div>
+
+				<p:panelGrid layout="grid" columns="2"
+					columnClasses="ui-grid-col-6,ui-grid-col-6"
+					styleClass="ui-panelgrid-blank" rendered="true">
+					<p:commandButton icon="ui-icon-check" value="Salvar"
+						action="#{produtoBean.salvar}"
+						update="painelcadastro frmPesquisa grlGlobal"
+						process="@this,painelcadastro" />
+
+					<p:commandButton icon="ui-icon-close" value="Fechar"
+						oncomplete="PF('dialog').hide();" process="@this" />
+				</p:panelGrid>
+
+
 			</h:form>
 		</p:dialog>
 

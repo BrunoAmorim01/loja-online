@@ -7,6 +7,7 @@ import javax.transaction.Transactional;
 import org.omnifaces.util.Messages;
 
 import br.com.lojaonline.DAO.EstoqueDAO;
+import br.com.lojaonline.DAO.FuncionarioDAO;
 import br.com.lojaonline.model.Estoque;
 
 @RequestScoped
@@ -15,10 +16,18 @@ public class EstoqueService {
 	@Inject
 	private EstoqueDAO estoqueDAO;
 
+	@Inject
+	private FuncionarioDAO funcionarioDAO;
+
 	@Transactional
 	public Estoque salvar(Estoque estoque) {
 
 		if (!estoque.getMovimentacao().isEmpty()) {
+
+			if (estoque.getFuncionario() == null) {
+				System.out.println("hue");
+				estoque.setFuncionario(funcionarioDAO.porID(1l));
+			}
 
 			Estoque result = estoqueDAO.merge(estoque);
 

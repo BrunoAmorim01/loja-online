@@ -1,0 +1,200 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	template="/WEB-INF/templates/TemplatePadrao.xhtml">
+
+	<ui:define name="titulo">Cadastro de Funcionários</ui:define>
+
+	<ui:define name="corpo">
+		<f:metadata>
+			<o:viewParam name="id" value="#{cadastroFuncionarioBean.funcionario}"
+				converter="funcionarioConverter" />
+
+			<f:viewAction action="#{cadastroFuncionarioBean.init()}" />
+			<f:viewAction
+				action="#{enderecoBean.carregaEnderecoPessoa(cadastroFuncionarioBean.funcionario.pessoa)}"></f:viewAction>
+		</f:metadata>
+
+		<h:form id="frmCadastro">
+
+			<p:toolbar style="margin-top: 20px;">
+				<p:toolbarGroup>
+					<p:button value="Novo" icon="fa fa-plus"
+						outcome="/funcionarios/funcionarioCadastro" />
+					<p:commandButton value="Salvar" icon="ui-icon-check"
+						actionListener="#{cadastroFuncionarioBean.salvar}"
+						process="@this painelcadastro " update="painelcadastro msgGlobal" />
+				</p:toolbarGroup>
+
+				<p:toolbarGroup align="right">
+
+					<p:button value="Pesquisa" icon="fa fa-search"
+						outcome="/estoque/pesquisaEntradaProdutos" />
+				</p:toolbarGroup>
+
+			</p:toolbar>
+
+
+			<h1>Cadastro de funcionários</h1>
+			<div align="center" class="ui-fluid">
+
+				<p:panelGrid id="painelcadastro" columns="1"
+					styleClass="ui-panelgrid-blank" style="width:95%">
+
+					<p:panel header="Informações gerais">
+
+						<p:panelGrid columns="4" layout="grid"
+							columnClasses="ui-grid-col-1,ui-grid-col-2,ui-grid-col-1,ui-grid-col-2">
+
+							<p:outputLabel value="Data de cadastro" />
+							<p:outputLabel
+								value="#{cadastroFuncionarioBean.funcionario.pessoa.dataHoraCadastro}"
+								disabled="true" converter="localDateTimeConverter" />
+
+							<p:outputLabel for="matricula" value="Matrícula" />
+							<p:inputText id="matricula"
+								value="#{cadastroFuncionarioBean.funcionario.matricula}" />
+
+							<p:outputLabel for="cpf" value="CPF" />
+							<p:inputMask id="cpf" mask="999.999.999-99"
+								value="#{cadastroFuncionarioBean.funcionario.cpf}"
+								converter="apenasNumeros" />
+
+							<p:outputLabel for="nome" value="Nome" />
+							<p:inputText id="nome"
+								value="#{cadastroFuncionarioBean.funcionario.pessoa.nome}" />
+
+						</p:panelGrid>
+
+					</p:panel>
+
+					<p:panel header="Endereco">
+
+						<p:panelGrid columns="4" layout="grid"
+							columnClasses="ui-grid-col-1,ui-grid-col-2,ui-grid-col-1,ui-grid-col-2">
+							<p:outputLabel for="estado" value="Estado" />
+							<p:selectOneMenu id="estado" value="#{enderecoBean.estado}"
+								converter="omnifaces.SelectItemsConverter">
+								<f:selectItem noSelectionOption="true" itemLabel="Selecione" />
+								<f:selectItems value="#{enderecoBean.estados}" var="e"
+									itemLabel="#{e.sigla} - #{e.nome}" itemValue="#{e}" />
+
+								<p:ajax listener="#{enderecoBean.listCidadePorEstado}"
+									update="cidade bairro logradouro" />
+							</p:selectOneMenu>
+
+							<p:outputLabel for="cidade" value="Cidade" />
+							<p:selectOneMenu id="cidade" value="#{enderecoBean.cidade}"
+								converter="omnifaces.SelectItemsConverter" filter="true">
+								<f:selectItem noSelectionOption="true" itemLabel="Selecione" />
+								<f:selectItems value="#{enderecoBean.cidades}" var="c"
+									itemLabel="#{c.nome}" itemValue="#{c}">
+								</f:selectItems>
+
+								<p:ajax listener="#{enderecoBean.listBairroPorCidade()}"
+									update="bairro logradouro" />
+							</p:selectOneMenu>
+
+							<p:outputLabel for="bairro" value="Bairro" />
+							<p:selectOneMenu id="bairro" value="#{enderecoBean.bairro}"
+								converter="omnifaces.SelectItemsConverter" filter="true"
+								filterMatchMode="contains">
+								<f:selectItem noSelectionOption="true" itemLabel="Selecione" />
+								<f:selectItems value="#{enderecoBean.bairros}" var="b"
+									itemLabel="#{b.nome}" itemValue="#{b}">
+								</f:selectItems>
+								<p:ajax process="@this" />
+							</p:selectOneMenu>
+
+							<p:outputLabel for="logradouro" value="Logradouro" />
+							<p:autoComplete id="logradouro"
+								value="#{cadastroFuncionarioBean.funcionario.pessoa.endereco}"
+								completeMethod="#{enderecoBean.listEnderecoPorBairro}" var="end"
+								itemLabel="#{end.logradouro}" itemValue="#{end}"
+								minQueryLength="3" maxResults="10" effect="fade"
+								converter="enderecoConverter" forceSelection="true">
+								<o:converter converterId="omnifaces.ListConverter"
+									list="#{enderecoBean.enderecos}" />
+
+								<p:ajax process="@this" />
+							</p:autoComplete>
+
+							<p:outputLabel for="num" value="Nº" />
+							<p:inputText id="num"
+								value="#{cadastroFuncionarioBean.funcionario.pessoa.numLogradouro}" />
+
+						</p:panelGrid>
+					</p:panel>
+
+					<p:panel header="Contato">
+
+						<p:panelGrid columns="4" layout="grid"
+							columnClasses="ui-grid-col-1,ui-grid-col-2,ui-grid-col-1,ui-grid-col-2">
+
+							<p:outputLabel for="email" value="E-mail" />
+							<p:inputText id="email"
+								value="#{cadastroFuncionarioBean.funcionario.pessoa.email}" />
+
+							<p:outputLabel for="telcel" value="Telefone celular" />
+							<p:inputMask id="telcel" mask="(99) 99999-9999"
+								value="#{cadastroFuncionarioBean.funcionario.pessoa.telCelular}"
+								converter="apenasNumeros" />
+
+							<p:outputLabel for="telfixo" value="Telefone fixo" />
+							<p:inputMask id="telfixo" mask="(99) 9999-9999"
+								value="#{cadastroFuncionarioBean.funcionario.pessoa.telfixo}"
+								converter="apenasNumeros" />
+
+						</p:panelGrid>
+
+					</p:panel>
+
+					<p:panel header="Segurança">
+
+						<p:panelGrid columns="2" layout="grid"
+							columnClasses="ui-grid-col-1,ui-grid-col-2">
+
+							<p:outputLabel value="Grupo de usuario" />
+							<p:selectManyCheckbox
+								value="#{cadastroFuncionarioBean.funcionario.pessoa.usuario.grupos}"
+								converter="omnifaces.SelectItemsConverter" layout="grid"
+								columns="2">
+
+								<f:attribute name="collectionType" value="java.util.ArrayList" />
+								<f:selectItems value="#{cadastroFuncionarioBean.grupos}"
+									var="grupo" itemLabel="#{grupo.nome}" itemValue="#{grupo}" />
+
+							</p:selectManyCheckbox>
+							<p:outputLabel value="Ativo" />
+							<p:selectBooleanCheckbox
+								value="#{cadastroFuncionarioBean.funcionario.pessoa.usuario.ativo}" />
+
+							<p:outputLabel value="Senha" />
+							<p:password id="senha"
+								value="#{cadastroFuncionarioBean.funcionario.pessoa.usuario.senha}"
+								match="confSenha" strongLabel="Forte" goodLabel="Boa"
+								weakLabel="Fraca" />
+
+							<p:outputLabel value="Confirme a senha" />
+							<p:password id="confSenha" />
+
+						</p:panelGrid>
+					</p:panel>
+
+
+				</p:panelGrid>
+
+
+
+			</div>
+
+
+
+		</h:form>
+	</ui:define>
+
+</ui:composition>

@@ -15,6 +15,15 @@ body {
 	height: 10px;
 }
 
+h1 {
+	margin-left:10px ;
+	font-size: 24px;
+	font-weight: 1000;
+	padding: 0;
+	margin: 50;
+	color: gray;
+}
+
 footer {
 	padding: 0px 8px;
 	margin-bottom: 10px

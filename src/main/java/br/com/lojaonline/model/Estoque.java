@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
@@ -19,12 +20,6 @@ import org.hibernate.validator.constraints.NotEmpty;
 @SuppressWarnings("serial")
 @Entity
 public class Estoque extends GenericModel {
-
-	@OneToMany(mappedBy = "estoque", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-	//@NotEmpty
-	// @JoinColumn(name="movimentacao_id",nullable = false, foreignKey =
-	// @ForeignKey(name = "FK_movimentacao"))
-	private List<EstoqueMovimentacaoEntrada> movimentacao;
 
 	@NotNull
 	@Column(name = "data_hora", nullable = false)
@@ -39,15 +34,16 @@ public class Estoque extends GenericModel {
 	@Column(columnDefinition = "text")
 	private String observacoes;
 
+	@ManyToOne
+	@JoinColumn(name = "funcionario_id", nullable = false, foreignKey = @ForeignKey(name = "FK_Estoque_funcionario"))
+	private Funcionario funcionario;
+
+	@OneToMany(mappedBy = "estoque", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	private List<EstoqueMovimentacaoEntrada> movimentacao;
+
 	public void calcularValorTotal() {
 		valorTotal = movimentacao.stream().map(m -> m.getMovimentacao().getValorParcial()).reduce(BigDecimal.ZERO,
 				BigDecimal::add);
-	}
-	
-	@Transient
-	public String getDataAtual(){
-		System.out.println(LocalDate.now().toString());
-		return LocalDate.now().toString();
 	}
 
 	public List<EstoqueMovimentacaoEntrada> getMovimentacao() {
@@ -88,6 +84,14 @@ public class Estoque extends GenericModel {
 
 	public void setObservacoes(String observacoes) {
 		this.observacoes = observacoes;
+	}
+
+	public Funcionario getFuncionario() {
+		return funcionario;
+	}
+
+	public void setFuncionario(Funcionario funcionario) {
+		this.funcionario = funcionario;
 	}
 
 }

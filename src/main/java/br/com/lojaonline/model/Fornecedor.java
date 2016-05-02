@@ -16,9 +16,7 @@ public class Fornecedor extends GenericModel {
 
 	@NotBlank
 	@Column(length = 60, unique = true, nullable = false)
-	private String razaoSocial;
-	
-	//@CNPJ
+	private String razaoSocial;	
 		
 	@Column(length=14,nullable=false,unique=true)
 	private Long cnpj;	
@@ -28,7 +26,7 @@ public class Fornecedor extends GenericModel {
 	
 	@NotNull
 	@OneToOne
-	@JoinColumn(name="pessoa_id",nullable=false,foreignKey=@ForeignKey(name="FK_pessoa"))
+	@JoinColumn(name="pessoa_id",nullable=false,foreignKey=@ForeignKey(name="FK_pessoa_fornecedor"))
 	private Pessoa pessoa;
 
 	public String getRazaoSocial() {

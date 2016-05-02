@@ -27,7 +27,6 @@ public class ProdutoBean implements Serializable {
 	@Inject
 	private ProdutoService produtoService;
 	
-	
 	@Inject
 	private ProdutoDAO produtoDAO;	
 
