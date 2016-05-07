@@ -1,5 +1,6 @@
 package br.com.lojaonline.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -21,7 +22,7 @@ public class Cliente extends GenericModel {
 	@Column(nullable = false, length = 10)
 	private TipoPessoa tipo;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "pessoa_id", nullable = false, foreignKey = @ForeignKey(name = "FK_Pessoa_Cliente"))
 	private Pessoa pessoa;
 

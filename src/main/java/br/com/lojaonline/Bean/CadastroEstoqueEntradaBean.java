@@ -12,10 +12,12 @@ import javax.inject.Named;
 
 import org.omnifaces.util.Messages;
 
+import br.com.lojaonline.DAO.FornecedorDAO;
 import br.com.lojaonline.DAO.ProdutoDAO;
 import br.com.lojaonline.Service.EstoqueService;
 import br.com.lojaonline.model.Estoque;
 import br.com.lojaonline.model.EstoqueMovimentacaoEntrada;
+import br.com.lojaonline.model.Fornecedor;
 import br.com.lojaonline.model.Movimentacao;
 import br.com.lojaonline.model.Produto;
 
@@ -29,6 +31,7 @@ public class CadastroEstoqueEntradaBean implements Serializable {
 	private EstoqueMovimentacaoEntrada estoqueEntrada;
 
 	private List<Produto> produtos;
+	private List<Fornecedor> fornecedores;
 
 	@Inject
 	private EstoqueService estoqueService;
@@ -36,28 +39,28 @@ public class CadastroEstoqueEntradaBean implements Serializable {
 	@Inject
 	private ProdutoDAO produtoDAO;
 
-	// @PostConstruct
+	@Inject
+	private FornecedorDAO fornecedorDAO;
+
+	@PostConstruct
 	public void init() {
-		estoque = new Estoque();
-		estoque.setMovimentacao(new ArrayList<>());
 		estoqueEntrada = new EstoqueMovimentacaoEntrada();
 		estoqueEntrada.setMovimentacao(new Movimentacao());
+		fornecedores = fornecedorDAO.list("razaoSocial");
+	}
+
+	// @PostConstruct
+	public void novo() {
+		estoque = new Estoque();
+		estoque.setMovimentacao(new ArrayList<>());
 	}
 
 	public void carregarEntrada() {
-		if (codigo != null) {
+		if (codigo != null)
 			estoque = estoqueService.findId(codigo);
-
-			if (estoque == null)
-				init();
-			else {
-				estoqueEntrada = new EstoqueMovimentacaoEntrada();
-				estoqueEntrada.setMovimentacao(new Movimentacao());
-			}
-		} else {
-			init();
+		else{
+			novo();
 		}
-
 	}
 
 	public void salvar() {
@@ -140,5 +143,13 @@ public class CadastroEstoqueEntradaBean implements Serializable {
 
 	public void setCodigo(Long codigo) {
 		this.codigo = codigo;
+	}
+
+	public List<Fornecedor> getFornecedores() {
+		return fornecedores;
+	}
+
+	public void setFornecedores(List<Fornecedor> fornecedores) {
+		this.fornecedores = fornecedores;
 	}
 }

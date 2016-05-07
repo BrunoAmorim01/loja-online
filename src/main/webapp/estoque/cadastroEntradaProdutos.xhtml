@@ -53,6 +53,18 @@
 						<p:outputLabel
 							value="#{cadastroEstoqueEntradaBean.estoque.codigo}" />
 
+						<p:outputLabel value="Fornecedor" />
+
+						<p:selectOneMenu
+							value="#{cadastroEstoqueEntradaBean.estoque.fornecedor}"
+							converter="omnifaces.SelectItemsConverter" filter="true"
+							filterMatchMode="contains">
+							<f:selectItem itemLabel="Selecione" noSelectionOption="true" />
+							<f:selectItems value="#{cadastroEstoqueEntradaBean.fornecedores}"
+								var="fornecedor" itemLabel="#{fornecedor.razaoSocial}"
+								itemValue="#{fornecedor}" />
+						</p:selectOneMenu>
+
 						<p:outputLabel for="nf" value="Nota fiscal" />
 						<p:inputText id="nf"
 							value="#{cadastroEstoqueEntradaBean.estoque.nNotaFiscal}" />

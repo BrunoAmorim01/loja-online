@@ -34,9 +34,15 @@ public class Estoque extends GenericModel {
 	@Column(columnDefinition = "text")
 	private String observacoes;
 
+	@NotNull
 	@ManyToOne
 	@JoinColumn(name = "funcionario_id", nullable = false, foreignKey = @ForeignKey(name = "FK_Estoque_funcionario"))
 	private Funcionario funcionario;
+
+	@NotNull
+	@ManyToOne
+	@JoinColumn(name = "fornecedor_id", nullable = false, foreignKey = @ForeignKey(name = "FK_Estoque_fornecedor"))
+	private Fornecedor fornecedor;
 
 	@OneToMany(mappedBy = "estoque", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private List<EstoqueMovimentacaoEntrada> movimentacao;
@@ -92,6 +98,14 @@ public class Estoque extends GenericModel {
 
 	public void setFuncionario(Funcionario funcionario) {
 		this.funcionario = funcionario;
+	}
+
+	public Fornecedor getFornecedor() {
+		return fornecedor;
+	}
+
+	public void setFornecedor(Fornecedor fornecedor) {
+		this.fornecedor = fornecedor;
 	}
 
 }

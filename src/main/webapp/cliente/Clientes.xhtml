@@ -7,142 +7,108 @@
 	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
 	template="/WEB-INF/templates/TemplatePadrao.xhtml">
 
-	<ui:define name="titulo">Fornecedores</ui:define>
+	<ui:define name="titulo">Clientes</ui:define>
 
 	<ui:define name="corpo">
 
 		<h:form id="frmPesquisa">
+
 			<p:panel header="Pesquisa de fornecedores">
-				<p:dataTable id="dataTable" value="#{fornecedorBean.fornecedores}"
-					var="fornecedor" reflow="true" paginatorAlwaysVisible="false"
+
+				<p:dataTable id="dataTable" value="#{pesquisaClienteBean.clientes}"
+					var="cliente" reflow="true" paginatorAlwaysVisible="false"
 					rows="10" emptyMessage="Nenhum registro encontrado">
 
 					<f:facet name="header">
-						<p:commandButton value="Novo fornecedor" icon="fa fa-plus"
-							title="Adiciona um novo fornecedor ao sistema"
-							actionListener="#{enderecoBean.listEstados()}"
-							action="#{fornecedorBean.novo()}"
+						<p:commandButton value="Novo cliente" icon="fa fa-plus"
+							title="Adiciona um novo cliente ao sistema"
+							actionListener="#{cadastroClienteBean.init}"
 							oncomplete="PF('dialog').show();"
 							update=":frmCadastro:painelcadastro">
-
-							<f:actionListener
-								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
 						</p:commandButton>
 					</f:facet>
 
-					<p:column headerText="Codigo" width="100">
-						<h:outputLabel value="#{fornecedor.codigo}" />
+					<p:column headerText="Codigo">
+						<h:outputText value="#{cliente.codigo}" />
+					</p:column>
+
+					<p:column headerText="Identificação">
+						<h:outputText value="#{cliente.documentoReceitaFederal}" />
 					</p:column>
 
 					<p:column headerText="Nome">
-						<h:outputLabel value="#{fornecedor.pessoa.nome}" />
+						<h:outputText value="#{cliente.pessoa.nome}" />
 					</p:column>
 
-					<p:column headerText="CNPJ" width="150">
-						<h:outputLabel value="#{fornecedor.cnpj}"
-							converter="cnpjConverter" />
+					<p:column headerText="E-mail">
+						<h:outputText value="#{cliente.pessoa.email}" />
 					</p:column>
 
-					<p:column headerText="Estado/Cidade" width="250">
-						<h:outputLabel
-							value="#{fornecedor.pessoa.endereco.bairro.cidade.estado.sigla} - #{fornecedor.pessoa.endereco.bairro.cidade.nome}" />
-					</p:column>
-
-					<p:column headerText="Contato" width="150">
-						<h:outputLabel styleClass="telefone"
-							value="#{fornecedor.pessoa.telfixo}" />
-
-						<h:outputLabel styleClass="telefone"
-							value="#{fornecedor.pessoa.telCelular}" />
+					<p:column headerText="Estado">
+						<h:outputText
+							value="#{cliente.pessoa.endereco.bairro.cidade.estado.sigla}" />
 					</p:column>
 
 					<p:column headerText="Opções" width="200">
 
 						<p:commandButton value="Editar" title="Editar o Fornecedor"
 							icon="fa fa-edit" process="@this"
-							actionListener="#{fornecedorBean.carregarFornecedor}"
+							action="#{enderecoBean.carregaEnderecoPessoa(cliente.pessoa)}"
 							oncomplete="PF('dialog').show();"
 							update=":grlGlobal :frmCadastro:painelcadastro">
 
-							<f:attribute name="fornecedorSelecionado" value="#{fornecedor}" />
-
-							<f:actionListener
-								binding="#{enderecoBean.carregaEnderecoPessoa(fornecedor.pessoa)}" />
+							<f:setPropertyActionListener value="#{cliente}"
+								target="#{cadastroClienteBean.cliente}" />
 
 							<f:actionListener
 								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
 						</p:commandButton>
 
-						<p:commandButton style="margin-left:10px;" value="Excluir"
-							title="Excluir a categoria" icon="fa fa-trash"
-							update=":msgGlobal :frmPesquisa:dataTable "
-							actionListener="#{fornecedorBean.excluir()}">
-
-							<p:confirm icon="fa fa-exclamation-circle"
-								header="Confirmação de exclusão"
-								message="Deseja realmente excluir o fornecedor #{fornecedor.razaoSocial} ?" />
-							<f:attribute name="fornecedorSelecionado" value="#{fornecedor}" />
-
-						</p:commandButton>
 					</p:column>
+
 				</p:dataTable>
 
 			</p:panel>
-
-			<p:confirmDialog global="true" closable="false">
-				<p:commandButton value="Sim" styleClass="ui-confirmdialog-yes"
-					icon="fa fa-check" />
-				<p:commandButton value="Não" styleClass="ui-confirmdialog-no"
-					icon="fa fa-close" />
-			</p:confirmDialog>
-
 		</h:form>
 
-
-		<p:dialog header="Fornecedor" widgetVar="dialog" modal="true"
-			resizable="false" closable="true" draggable="false" responsive="true"
-			height="500">
+		<p:dialog header="Cliente" widgetVar="dialog" modal="true"
+			resizable="false" closable="true" draggable="false" responsive="true">
 
 			<h:form id="frmCadastro">
-
 				<div class="ui-fluid">
+
 					<p:panelGrid id="painelcadastro" columns="1"
 						styleClass="ui-panelgrid-blank">
 
 						<p:panel header="Dados gerais">
 
 							<p:panelGrid columns="4" layout="grid"
-								columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4">
+								columnClasses="ui-grid-col-2,ui-grid-col-3,ui-grid-col-2,ui-grid-col-3">
 
-								<p:outputLabel for="dataHora" value="Data/Hora cadastro" />
-								<p:inputText id="dataHora"
-									value="#{fornecedorBean.fornecedor.pessoa.dataHoraCadastro}"
+								<p:outputLabel value="Data de cadastro" />
+								<p:outputLabel
+									value="#{cadastroClienteBean.cliente.pessoa.dataHoraCadastro}"
 									disabled="true" converter="localDateTimeConverter" />
 
-								<p:outputLabel for="cnpj" value="CNPJ" />
-								<p:inputMask id="cnpj" mask="99.999.999/9999-99"
-									value="#{fornecedorBean.fornecedor.cnpj}"
-									converter="cnpjConverter" required="true"
-									validator="CNPJValidator"
-									requiredMessage="CNPJ deve ser informado">
-								</p:inputMask>
+								<p:outputLabel value="CPF ou CNPJ" />
+								<p:inputText
+									value="#{cadastroClienteBean.cliente.documentoReceitaFederal}"
+									converter="apenasNumeros" />
 
-								<p:outputLabel for="inscEstadual" value="Inscrição Estadual" />
-								<p:inputText id="inscEstadual"
-									value="#{fornecedorBean.fornecedor.inscricaoEstadual}" />
+								<p:outputLabel value="Nome" />
+								<p:inputText value="#{cadastroClienteBean.cliente.pessoa.nome}"
+									size="80" />
 
-								<p:outputLabel for="razaoSocial" value="Razão Social" />
-								<p:inputText id="razaoSocial"
-									value="#{fornecedorBean.fornecedor.razaoSocial}" />
-
-								<p:outputLabel for="nomeFantasia" value="Nome Fantasia" />
-								<p:inputText id="nomeFantasia"
-									value="#{fornecedorBean.fornecedor.pessoa.nome}" />
+								<p:outputLabel value="Tipo pessoa" />
+								<p:selectOneRadio value="#{cadastroClienteBean.cliente.tipo}"
+									layout="grid" columns="1">
+									<f:selectItems value="#{cadastroClienteBean.tipoPessoa}"
+										var="tipoPessoa" itemValue="#{tipoPessoa}"
+										itemLabel="#{tipoPessoa.descricao}" />
+								</p:selectOneRadio>
 
 							</p:panelGrid>
-
 						</p:panel>
-
 
 						<p:panel header="Endereco">
 
@@ -187,7 +153,7 @@
 
 								<p:outputLabel for="logradouro" value="Logradouro" />
 								<p:autoComplete id="logradouro"
-									value="#{fornecedorBean.fornecedor.pessoa.endereco}"
+									value="#{cadastroClienteBean.cliente.pessoa.endereco}"
 									completeMethod="#{enderecoBean.listEnderecoPorBairro}"
 									var="end" itemLabel="#{end.logradouro}" itemValue="#{end}"
 									minQueryLength="3" maxResults="10" effect="fade"
@@ -200,11 +166,10 @@
 
 								<p:outputLabel for="num" value="Nº" />
 								<p:inputText id="num"
-									value="#{fornecedorBean.fornecedor.pessoa.numLogradouro}" />
+									value="#{cadastroClienteBean.cliente.pessoa.numLogradouro}" />
 
 							</p:panelGrid>
 						</p:panel>
-
 
 						<p:panel header="Contato">
 
@@ -213,29 +178,28 @@
 
 								<p:outputLabel for="email" value="E-mail" />
 								<p:inputText id="email"
-									value="#{fornecedorBean.fornecedor.pessoa.email}" />
+									value="#{cadastroClienteBean.cliente.pessoa.email}" />
 
 								<p:outputLabel for="telfixo" value="Tel. fixo" />
 								<p:inputMask id="telfixo" mask="(99)9999-9999"
 									converter="apenasNumeros"
-									value="#{fornecedorBean.fornecedor.pessoa.telfixo}"
+									value="#{cadastroClienteBean.cliente.pessoa.telfixo}"
 									required="true" requiredMessage="Tel. fixo deve ser informado" />
 
 								<p:outputLabel for="telCelular" value="Tel. Celular" />
 								<p:inputMask id="telCelular" mask="(99)99999-9999"
-									value="#{fornecedorBean.fornecedor.pessoa.telCelular}"
+									value="#{cadastroClienteBean.cliente.pessoa.telCelular}"
 									converter="apenasNumeros" />
 
 							</p:panelGrid>
 
 						</p:panel>
-
 					</p:panelGrid>
 
 					<p:panelGrid columns="2" layout="grid"
 						styleClass="ui-panelgrid-blank">
 						<p:commandButton icon="ui-icon-check" value="Salvar"
-							actionListener="#{fornecedorBean.salvar}"
+							actionListener="#{cadastroClienteBean.salvar}"
 							process="@this :frmCadastro:painelcadastro"
 							update=":grlGlobal :frmCadastro:painelcadastro :frmPesquisa:dataTable" />
 
@@ -243,31 +207,11 @@
 							oncomplete="PF('dialog').hide()" />
 					</p:panelGrid>
 
-
 				</div>
 			</h:form>
-
 		</p:dialog>
 
-		<script>
-function configurarTel(){
-	var SPMaskBehavior = function (val) {
-		  return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-0000';
-		},
-		spOptions = {
-		  onKeyPress: function(val, e, field, options) {
-		      field.mask(SPMaskBehavior.apply({}, arguments), options);
-		    }
-		};
 
-		$('.telefone').mask(SPMaskBehavior, spOptions);
-} 
-
-$(document).ready(function(){
-	configurarTel();
-});
-
-</script>
 
 	</ui:define>
 

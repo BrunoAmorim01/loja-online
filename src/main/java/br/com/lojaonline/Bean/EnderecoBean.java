@@ -81,9 +81,7 @@ public class EnderecoBean implements Serializable {
 		} catch (NullPointerException exception) {
 			estado = new Estado();
 			cidade = new Cidade();
-			bairro = new Bairro();
-
-			Messages.addGlobalError("Parametro invalido novo cadastro acionado");
+			bairro = new Bairro();			
 		}
 
 	}

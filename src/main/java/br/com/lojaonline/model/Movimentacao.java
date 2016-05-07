@@ -26,7 +26,7 @@ public class Movimentacao {
 	private BigDecimal valorUnitario;
 
 	@ManyToOne
-	@JoinColumn(name = "produto_id", nullable = false, foreignKey = @ForeignKey(name = "FK_produto"))
+	@JoinColumn(name = "produto_id", nullable = false)
 	private Produto produto;
 
 	@Transient

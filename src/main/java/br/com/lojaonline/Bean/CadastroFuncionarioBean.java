@@ -27,8 +27,6 @@ public class CadastroFuncionarioBean implements Serializable {
 
 	private Funcionario funcionario;
 
-
-
 	@Inject
 	private GrupoDAO grupoDAO;
 
@@ -38,8 +36,7 @@ public class CadastroFuncionarioBean implements Serializable {
 	public void init() {
 		grupos = grupoDAO.list();
 
-		if (funcionario == null) {
-			System.out.println("novo");
+		if (funcionario == null) {			
 			novo();
 		}
 	}

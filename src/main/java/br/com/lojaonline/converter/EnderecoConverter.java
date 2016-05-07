@@ -16,18 +16,7 @@ public class EnderecoConverter implements Converter {
 	EnderecoDAO enderecoDAO;
 
 	@Override
-	public Object getAsObject(FacesContext context, UIComponent component, String value) {
-		Endereco endereco = null;
-/*
-		try {
-			if (value != null && !value.isEmpty()) {
-				Long id = Long.parseLong(value);
-				endereco = enderecoDAO.porID(id);
-			}
-		} catch (RuntimeException ex) {
-			System.out.println("oooooola obkect");
-			return null;
-		}*/
+	public Object getAsObject(FacesContext context, UIComponent component, String value) {		
 
 		return value;
 	}
@@ -40,8 +29,7 @@ public class EnderecoConverter implements Converter {
 				Endereco endereco = (Endereco) value;
 				return endereco.getCodigo().toString();
 			}
-		} catch (RuntimeException ex) {
-			System.out.println("oooooola string");
+		} catch (RuntimeException ex) {			
 			return null;
 		}
 		return "";

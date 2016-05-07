@@ -25,7 +25,7 @@ public class EstoqueService {
 		if (!estoque.getMovimentacao().isEmpty()) {
 
 			if (estoque.getFuncionario() == null) {
-				System.out.println("hue");
+				
 				estoque.setFuncionario(funcionarioDAO.porID(1l));
 			}
 

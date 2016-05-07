@@ -1,0 +1,289 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	template="/WEB-INF/templates/TemplatePadrao.xhtml"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+
+	<ui:define name="titulo">Pedidos</ui:define>
+
+	<ui:define name="corpo">
+
+
+		<h:form id="frmPesquisa">
+			<p:panel header="Filtro de produtos" toggleable="true">
+				<p:panel header="Pesquisa de produtos">
+					<div class="ui-fluid">
+						<p:panelGrid id="gridPesquisa" layout="grid"
+							styleClass="ui-panelgrid-blank" columns="4"
+							columnClasses="ui-grid-col-1,ui-grid-col-2,ui-grid-col-1,ui-grid-col-2">
+
+							<p:outputLabel for="categoria" value="Categoria" />
+							<p:selectOneMenu id="categoria"
+								value="#{pesquisaProdutoBean.produtoFilter.categoria}"
+								filter="true" filterMatchMode="contains"
+								converter="omnifaces.SelectItemsConverter">
+
+								<f:selectItem noSelectionOption="true"
+									itemLabel="Selecione uma opção" />
+								<f:selectItems value="#{pesquisaProdutoBean.categorias}"
+									var="cat" itemLabel="#{cat.nome}" itemValue="#{cat}"
+									filter="true" />
+
+							</p:selectOneMenu>
+
+							<p:outputLabel for="fabricante" value="Fabricante" />
+							<p:selectOneMenu id="fabricante"
+								value="#{pesquisaProdutoBean.produtoFilter.fabricante}"
+								filter="true" filterMatchMode="contains"
+								converter="omnifaces.SelectItemsConverter">
+
+								<f:selectItem noSelectionOption="true"
+									itemLabel="Selecione uma opção" />
+								<f:selectItems value="#{pesquisaProdutoBean.fabricantes}"
+									var="fab" itemLabel="#{fab.nome}" itemValue="#{fab}" />
+
+							</p:selectOneMenu>
+
+							<p:outputLabel for="sku" value="SKU" />
+							<p:inputText id="sku"
+								value="#{pesquisaProdutoBean.produtoFilter.sku}" />
+
+							<p:outputLabel for="produto" value="Produto" />
+							<p:inputText id="produto"
+								value="#{pesquisaProdutoBean.produtoFilter.produto}" />
+						</p:panelGrid>
+					</div>
+
+					<p:panelGrid id="gridPesquisaBotao" layout="grid"
+						styleClass="ui-panelgrid-blank" columns="1">
+						<p:commandButton icon="fa fa-search " value="Pesquisar"
+							process="@this gridPesquisa"
+							actionListener="#{pesquisaProdutoBean.pesquisar()}"
+							update="gridPesquisa datatable" />
+					</p:panelGrid>
+
+				</p:panel>
+			</p:panel>
+
+			<p:panel header="Lista de produtos" toggleable="true">
+
+				<p:dataTable id="datatable" widgetVar="produtosWV"
+					value="#{pesquisaProdutoBean.produtos}" var="produto" reflow="true"
+					paginatorAlwaysVisible="false" rows="5"
+					emptyMessage="Nenhum registro encontrado">
+
+					<p:column headerText="Codigo" width="100">
+						<p:outputLabel value="#{produto.codigo}" />
+					</p:column>
+
+					<p:column headerText="SKU" width="150" filterBy="#{produto.sku}">
+						<p:outputLabel value="#{produto.sku}" />
+					</p:column>
+
+					<p:column headerText="Nome" sortBy="#{produto.nome}"
+						filterBy="#{produto.nome}">
+						<p:outputLabel value="#{produto.nome}" />
+					</p:column>
+
+
+					<p:column headerText="Categoria" width="150"
+						filterBy="#{produto.categoria.nome}" filterMatchMode="exact">
+						<f:facet name="filter">
+							<p:selectOneMenu onchange="PF('produtosWV').filter()">
+								<f:selectItem itemLabel="Selecione" itemValue="#{null}"
+									noSelectionOption="true" />
+								<f:selectItems value="#{pesquisaProdutoBean.categorias}" var="c"
+									itemLabel="#{c.nome}" itemValue="#{c.nome}" />
+							</p:selectOneMenu>
+						</f:facet>
+
+						<p:outputLabel value="#{produto.categoria.nome}" />
+					</p:column>
+
+
+					<p:column headerText="Fabricante" width="150"
+						filterBy="#{produto.fabricante.nome}" filterMatchMode="exact">
+
+						<f:facet name="filter">
+							<p:selectOneMenu onchange="PF('produtosWV').filter()">
+								<f:selectItem itemLabel="Selecione" itemValue="#{null}"
+									noSelectionOption="true" />
+								<f:selectItems value="#{pesquisaProdutoBean.fabricantes}"
+									var="f" itemLabel="#{f.nome}" itemValue="#{f.nome}" />
+							</p:selectOneMenu>
+						</f:facet>
+
+						<p:outputLabel value="#{produto.fabricante.nome}" />
+					</p:column>
+
+					<p:column headerText="Estoque" width="100">
+						<p:outputLabel value="#{produto.quantidade}" />
+					</p:column>
+
+					<p:column headerText="Valor unitário" width="150">
+						<p:outputLabel value="#{produto.valorUnitario}">
+							<f:convertNumber type="currency" locale="pt_BR" />
+						</p:outputLabel>
+					</p:column>
+
+					<p:column headerText="Opções" width="200">
+
+						<p:commandButton value="Adicionar ao carrinho"
+							title="Editar o produto" icon="fa fa-edit"
+							update="msgGlobal :frmCadastro:datatable :frmCadastro:painelcadastro"
+							process="@this"
+							actionListener="#{cadastroPedidoBean.addItem(produto)}">
+						</p:commandButton>
+
+					</p:column>
+				</p:dataTable>
+			</p:panel>
+		</h:form>
+
+
+		<h:form id="frmCadastro">
+
+			<div class="ui-fluid">
+
+				<p:panel header="Informações do pedido">
+
+					<p:panelGrid id="painelcadastro" columns="1"
+						styleClass="ui-panelgrid-blank" style="width:100%">
+
+						<p:panel header="Informações gerais">
+
+							<p:panelGrid columns="4" layout="grid"
+								columnClasses="ui-grid-col-1,ui-grid-col-5,ui-grid-col-1,ui-grid-col-5">
+
+
+								<p:outputLabel value="Data de criação" />
+								<h:outputLabel id="dataCriacao"
+									value="#{cadastroPedidoBean.pedido.dataCriacao}" />
+
+								<p:outputLabel for="dataEntrega" value="Data de entrega" />
+								<p:calendar id="dataEntrega"
+									value="#{cadastroPedidoBean.pedido.dataEntrega}"
+									converter="localDateTimeConverter" mindate="now()" />
+
+								<p:outputLabel for="cliente" value="Cliente" />
+								<p:autoComplete id="cliente"
+									value="#{cadastroPedidoBean.pedido.cliente}"
+									completeMethod="#{pesquisaClienteBean.pesquisarClientesPorNome}"
+									var="cli" itemLabel="#{cli.pessoa.nome}" itemValue="#{cli}"
+									minQueryLength="3" maxResults="10" effect="fade"
+									forceSelection="true">
+									<o:converter converterId="omnifaces.ListConverter"
+										list="#{pesquisaClienteBean.clientes}" />
+								</p:autoComplete>
+
+								<p:outputLabel value="Forma de pagamento" />
+								<p:selectOneRadio
+									value="#{cadastroPedidoBean.pedido.formaPagamento}"
+									layout="grid" columns="2">
+
+									<f:selectItems value="#{cadastroPedidoBean.formaPagamento}"
+										var="pagamento" itemValue="#{pagamento}"
+										itemLabel="#{pagamento.descricao}" />
+								</p:selectOneRadio>
+
+								<p:outputLabel for="funcionario" value="Funcionário" />
+								<p:inputText id="funcionario"
+									value="#{cadastroPedidoBean.pedido.funcionario.pessoa.nome}" />
+
+								<p:outputLabel for="observacao" value="Observações" />
+								<p:inputTextarea id="observacao"
+									value="#{cadastroPedidoBean.pedido.observacao}" />
+
+								<p:outputLabel for="desconto" value="Desconto" />
+								<pe:inputNumber id="desconto" symbol="R$ "
+									value="#{cadastroPedidoBean.pedido.valorDesconto}"
+									minValue="0.00" maxValue="999999.99">
+									<p:ajax
+										listener="#{cadastroPedidoBean.pedido.calcularValorTotal()}"
+										update="painelcadastro" />
+								</pe:inputNumber>
+
+								<p:outputLabel for="frete" value="Frete" />
+								<pe:inputNumber id="frete" symbol="R$ "
+									value="#{cadastroPedidoBean.pedido.valorFrete}" minValue="0.00"
+									maxValue="999999.99">
+									<p:ajax
+										listener="#{cadastroPedidoBean.pedido.calcularValorTotal()}"
+										update="painelcadastro" />
+								</pe:inputNumber>
+
+								<p:outputLabel for="subtotal" value="Subtotal" />
+								<h:outputLabel id="subtotal"
+									value="#{cadastroPedidoBean.pedido.subtotal}">
+									<f:convertNumber type="currency" locale="pt_BR" />
+								</h:outputLabel>
+
+								<p:outputLabel for="total" value="Total" />
+								<h:outputLabel id="total"
+									value="#{cadastroPedidoBean.pedido.valorTotal}">
+									<f:convertNumber type="currency" locale="pt_BR" />
+								</h:outputLabel>
+
+								<p:outputLabel for="status" value="Status Pedido" />
+								<h:outputLabel id="status"
+									value="#{cadastroPedidoBean.pedido.status}" />
+
+
+							</p:panelGrid>
+
+						</p:panel>
+
+					</p:panelGrid>
+				</p:panel>
+
+
+				<p:panel header="Produtos">
+					<p:dataTable id="datatable" widgetVar="produtosWV"
+						value="#{cadastroPedidoBean.pedido.itens}" var="produto"
+						reflow="true" paginatorAlwaysVisible="false" rows="5"
+						emptyMessage="Nenhum registro encontrado">
+
+						<p:column headerText="SKU" width="150">
+							<p:outputLabel value="#{produto.movimentacao.produto.sku}" />
+						</p:column>
+
+						<p:column headerText="Nome">
+							<p:outputLabel value="#{produto.movimentacao.produto.nome}" />
+						</p:column>
+
+						<p:column headerText="Valor unitário" width="150">
+							<p:outputLabel
+								value="#{produto.movimentacao.produto.valorUnitario}">
+								<f:convertNumber type="currency" locale="pt_BR" />
+							</p:outputLabel>
+						</p:column>
+
+						<p:column headerText="QTDE" width="150">
+							<p:spinner value="#{produto.movimentacao.quantidade}" />
+						</p:column>
+
+						<p:column headerText="Valor parcial" width="150">
+							<p:outputLabel value="#{produto.precoParcial}">
+								<f:convertNumber type="currency" locale="pt_BR" />
+							</p:outputLabel>
+						</p:column>
+
+						<p:column headerText="Opções" width="200">
+
+							<p:commandButton value="Remover do carrinho"
+								title="Editar o produto" icon="fa fa-edit" process="@this">
+							</p:commandButton>
+
+						</p:column>
+					</p:dataTable>
+				</p:panel>
+			</div>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

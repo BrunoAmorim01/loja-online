@@ -18,8 +18,10 @@ public class FuncionarioService {
 	
 	@Transactional
 	public Funcionario salvar(Funcionario funcionario) {
-
+		
+		if(funcionario.getPessoa().getDataHoraCadastro() ==null)
 		funcionario.getPessoa().setDataHoraCadastro(LocalDateTime.now());
+		
 		return funcionarioDAO.merge(funcionario);
 
 	}

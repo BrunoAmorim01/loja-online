@@ -64,9 +64,7 @@ public class Produto extends GenericModel {
 	@NotNull
 	@ManyToOne
 	@JoinColumn(name="categoria_id",nullable=false,foreignKey=@ForeignKey(name="FK_Categoria"))
-	private Categoria categoria;
-	
-	
+	private Categoria categoria;	
 
 	public String getNome() {
 		return nome;
