@@ -79,6 +79,7 @@ public class Pedido extends GenericModel {
 		item.getMovimentacao().setQuantidade(new Short("1"));
 		item.getMovimentacao().setValorUnitario(produto.getValorUnitario());
 
+		item.setValorEstoque(BigDecimal.valueOf(16.32));
 		item.setPedido(this);
 
 		itens.add(item);
@@ -86,22 +87,18 @@ public class Pedido extends GenericModel {
 
 	@Transient
 	public BigDecimal getSubtotal() {
-		
-		System.out.println("Frete "+getValorFrete());
-		System.out.println("Desconto "+getValorDesconto());
-		System.out.println("frete - desconto "+valorFrete.add(getValorDesconto()));
-		System.out.println("Total "+getValorTotal());
-		System.out.println("Resultado "+getValorTotal().subtract(getValorFrete().add(getValorDesconto())));
-		
-		return getValorTotal().subtract(getValorFrete()).add(getValorDesconto());
+
+		BigDecimal total = itens.stream().map(i -> i.getMovimentacao().getValorParcial()).reduce(BigDecimal.ZERO,
+				BigDecimal::add);
+
+		return total;
 
 	}
 
 	public void calcularValorTotal() {
-		BigDecimal total = itens.stream().map(i -> i.getMovimentacao().getProduto().getValorUnitario())
-				.reduce(BigDecimal.ZERO, BigDecimal::add);
-
-		// total.add(getSubtotal());
+		BigDecimal total = itens.stream().map(i -> i.getMovimentacao().getValorParcial()).reduce(BigDecimal.ZERO,
+				BigDecimal::add);
+		// valorTotal.add(getSubtotal().subtract(valorFrete.subtract(valorDesconto)));
 
 		valorTotal = total.add(valorFrete.subtract(valorDesconto));
 	}

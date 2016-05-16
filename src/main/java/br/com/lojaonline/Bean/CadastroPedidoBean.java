@@ -17,6 +17,7 @@ import org.omnifaces.util.Messages;
 import br.com.lojaonline.DAO.ClienteDAO;
 import br.com.lojaonline.DAO.FuncionarioDAO;
 import br.com.lojaonline.Service.ClienteService;
+import br.com.lojaonline.Service.PedidoService;
 import br.com.lojaonline.model.Cliente;
 import br.com.lojaonline.model.Funcionario;
 import br.com.lojaonline.model.ItemPedido;
@@ -32,11 +33,14 @@ public class CadastroPedidoBean implements Serializable {
 
 	private Pedido pedido;
 
+	@Inject
+	private PedidoService pedidoService;
+
 	private List<Cliente> clientes;
 
 	@Inject
 	ClienteService clienteService;
-	
+
 	@Inject
 	FuncionarioDAO funcionarioDAO;
 
@@ -48,14 +52,18 @@ public class CadastroPedidoBean implements Serializable {
 		pedido.setValorDesconto(BigDecimal.ZERO);
 		pedido.setValorFrete(BigDecimal.ZERO);
 		pedido.setValorTotal(BigDecimal.ZERO);
-		
+
 		addFunc();
-		
+
 	}
-	
+
+	public void salvar() {
+		pedidoService.salvar(pedido);
+	}
+
 	@Transactional
-	public void addFunc(){
-		
+	public void addFunc() {
+
 		Funcionario funcionario = funcionarioDAO.porID(1l);
 		pedido.setFuncionario(funcionario);
 	}
@@ -68,6 +76,18 @@ public class CadastroPedidoBean implements Serializable {
 			Messages.addGlobalError("Produto já está na lista");
 		}
 
+		pedido.calcularValorTotal();
+
+	}
+
+	public void atualizaQuantidadeItem() {
+
+		pedido.calcularValorTotal();
+	}
+
+	public void removerItem(ItemPedido item) {
+
+		pedido.getItens().remove(item);
 		pedido.calcularValorTotal();
 
 	}

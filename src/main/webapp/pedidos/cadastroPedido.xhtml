@@ -135,7 +135,7 @@
 
 						<p:commandButton value="Adicionar ao carrinho"
 							title="Editar o produto" icon="fa fa-edit"
-							update="msgGlobal :frmCadastro:datatable :frmCadastro:painelcadastro"
+							update="msgGlobal :frmCadastro:datatable :frmCadastro:subtotal :frmCadastro:total"
 							process="@this"
 							actionListener="#{cadastroPedidoBean.addItem(produto)}">
 						</p:commandButton>
@@ -147,28 +147,52 @@
 
 
 		<h:form id="frmCadastro">
+			<p:toolbar style="margin-top: 20px;">
+				<p:toolbarGroup>
+					<p:button value="Novo" outcome="/pedidos/cadastroPedido" />
+					<p:commandButton value="Salvar"
+						action="#{cadastroPedidoBean.salvar}" process="@form"
+						update="@form" />
+				</p:toolbarGroup>
+
+				<p:toolbarGroup align="right">
+
+					<p:commandButton value="Emitir" process="@form" update="@form" />
+
+					<p:commandButton value="Cancelar" process="@this" update="@form" />
+
+					<p:commandButton value="Enviar por email" process="@this" />
+
+					<p:separator />
+
+					<p:button value="Pesquisa" />
+				</p:toolbarGroup>
+
+			</p:toolbar>
 
 			<div class="ui-fluid">
 
+
+
 				<p:panel header="Informações do pedido">
 
-					<p:panelGrid id="painelcadastro" columns="1"
-						styleClass="ui-panelgrid-blank" style="width:100%">
+					<p:panelGrid columns="1" styleClass="ui-panelgrid-blank"
+						style="width:100%">
 
-						<p:panel header="Informações gerais">
+						<p:panel id="pnlPedido" header="Informações gerais">
 
-							<p:panelGrid columns="4" layout="grid"
+							<p:panelGrid id="gridPedido" columns="4" layout="grid"
 								columnClasses="ui-grid-col-1,ui-grid-col-5,ui-grid-col-1,ui-grid-col-5">
-
 
 								<p:outputLabel value="Data de criação" />
 								<h:outputLabel id="dataCriacao"
-									value="#{cadastroPedidoBean.pedido.dataCriacao}" />
+									value="#{cadastroPedidoBean.pedido.dataCriacao}"
+									converter="localDateTimeConverter" />
 
 								<p:outputLabel for="dataEntrega" value="Data de entrega" />
 								<p:calendar id="dataEntrega"
 									value="#{cadastroPedidoBean.pedido.dataEntrega}"
-									converter="localDateTimeConverter" mindate="now()" />
+									converter="primefacesCalendarConverter" mindate="now()" mask="DD/MM/yyyy"/>
 
 								<p:outputLabel for="cliente" value="Cliente" />
 								<p:autoComplete id="cliente"
@@ -203,18 +227,18 @@
 								<pe:inputNumber id="desconto" symbol="R$ "
 									value="#{cadastroPedidoBean.pedido.valorDesconto}"
 									minValue="0.00" maxValue="999999.99">
-									<p:ajax
+									<p:ajax process="@this"
 										listener="#{cadastroPedidoBean.pedido.calcularValorTotal()}"
-										update="painelcadastro" />
+										update="total" />
 								</pe:inputNumber>
 
 								<p:outputLabel for="frete" value="Frete" />
 								<pe:inputNumber id="frete" symbol="R$ "
 									value="#{cadastroPedidoBean.pedido.valorFrete}" minValue="0.00"
 									maxValue="999999.99">
-									<p:ajax
+									<p:ajax process="@this"
 										listener="#{cadastroPedidoBean.pedido.calcularValorTotal()}"
-										update="painelcadastro" />
+										update="total" />
 								</pe:inputNumber>
 
 								<p:outputLabel for="subtotal" value="Subtotal" />
@@ -264,7 +288,15 @@
 						</p:column>
 
 						<p:column headerText="QTDE" width="150">
-							<p:spinner value="#{produto.movimentacao.quantidade}" />
+							<p:spinner value="#{produto.movimentacao.quantidade}" min="1"
+								max="#{produto.movimentacao.produto.quantidade}">
+
+								<p:ajax listener="#{cadastroPedidoBean.atualizaQuantidadeItem}"
+									process="@this"
+									update="datatable :frmCadastro:subtotal :frmCadastro:total" />
+
+							</p:spinner>
+
 						</p:column>
 
 						<p:column headerText="Valor parcial" width="150">
@@ -276,7 +308,9 @@
 						<p:column headerText="Opções" width="200">
 
 							<p:commandButton value="Remover do carrinho"
-								title="Editar o produto" icon="fa fa-edit" process="@this">
+								title="Editar o produto" icon="fa fa-edit" process="@this"
+								actionListener="#{cadastroPedidoBean.removerItem(produto)}"
+								update=":frmCadastro:datatable :frmCadastro:subtotal :frmCadastro:total">
 							</p:commandButton>
 
 						</p:column>
